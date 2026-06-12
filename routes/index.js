@@ -6,4 +6,5 @@ module.exports = (app) => {
   require("./artistaxgenero.routes")(app);
   require("./admin.routes")(app);
   require("./search.routes")(app);
+  require("./usuario.routes")(app);
 };

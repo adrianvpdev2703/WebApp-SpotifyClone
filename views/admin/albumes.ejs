@@ -1,96 +1,106 @@
 <%- include('../partials/header', { title: 'Administrar Álbumes' }) %>
 
-<div class="container mt-4">
-  <h2 class="text-white">Álbumes</h2>
+<main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-32">
+  <div class="flex items-center mb-6 space-x-4">
+    <a href="/admin" class="text-gray-400 hover:text-white transition">← Volver</a>
+    <h2 class="text-2xl font-bold text-white">Administrar Álbumes</h2>
+  </div>
 
-  <!-- Insert -->
-  <form id="form-insert-album" enctype="multipart/form-data">
-    <h4 class="text-white">Crear Álbum</h4>
-    <div class="mb-3">
-      <label class="form-label text-white">Nombre</label>
-      <input type="text" name="nombre" class="form-control" required />
-    </div>
-    <div class="mb-3">
-      <label class="form-label text-white">Artista ID</label>
-      <input type="number" name="artista" class="form-control" required />
-    </div>
-    <div class="mb-3">
-      <label class="form-label text-white">Imagen</label>
-      <input type="file" name="imagen" class="form-control" />
-    </div>
-    <button class="btn btn-success">Crear</button>
-  </form>
+  <div class="space-y-8">
+    <form id="form-insert-album" enctype="multipart/form-data" class="bg-[#181818] p-6 rounded-lg border border-[#282828]">
+      <h4 class="text-xl font-semibold text-white mb-4 border-b border-gray-700 pb-2">Crear Álbum</h4>
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-400 mb-1">Nombre</label>
+        <input type="text" name="nombre" required class="w-full bg-[#282828] border border-transparent rounded px-3 py-2 text-white focus:outline-none focus:ring-1 focus:ring-[#1db954] transition" />
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-400 mb-1">Artista</label>
+        <select name="artista" required class="w-full bg-[#282828] border border-transparent rounded px-3 py-2 text-white focus:outline-none focus:ring-1 focus:ring-[#1db954] transition appearance-none">
+          <option value="">Cargando artistas...</option>
+        </select>
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-400 mb-1">Imagen</label>
+        <input type="file" name="imagen" class="w-full bg-[#282828] text-gray-300 rounded px-3 py-2 file:mr-4 file:py-1 file:px-3 file:rounded file:border-0 file:bg-[#1db954] file:text-black hover:file:bg-green-600 transition" />
+      </div>
+      <button class="bg-[#1db954] hover:bg-green-600 text-black font-bold py-2 px-6 rounded-full transition">Crear</button>
+    </form>
 
-  <!-- PUT -->
-  <form id="form-put-album" enctype="multipart/form-data" class="mt-3">
-    <h4 class="text-white">Actualizar Álbum (PUT)</h4>
-    <div class="mb-3">
-      <label class="form-label text-white">ID</label>
-      <input type="number" id="put-album-id" class="form-control" required />
-    </div>
-    <div class="mb-3">
-      <label class="form-label text-white">Nombre</label>
-      <input type="text" name="nombre" class="form-control" required />
-    </div>
-    <div class="mb-3">
-      <label class="form-label text-white">Artista ID</label>
-      <input type="number" name="artista" class="form-control" required />
-    </div>
-    <div class="mb-3">
-      <label class="form-label text-white">Imagen</label>
-      <input type="file" name="imagen" class="form-control" />
-    </div>
-    <button class="btn btn-primary">Actualizar (PUT)</button>
-  </form>
+    <form id="form-put-album" enctype="multipart/form-data" class="bg-[#181818] p-6 rounded-lg border border-[#282828]">
+      <h4 class="text-xl font-semibold text-white mb-4 border-b border-gray-700 pb-2">Actualizar Álbum (PUT)</h4>
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-400 mb-1">ID del Álbum</label>
+        <input type="number" id="put-album-id" required class="w-full bg-[#282828] border border-transparent rounded px-3 py-2 text-white focus:outline-none focus:border-blue-500 transition" />
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-400 mb-1">Nombre</label>
+        <input type="text" name="nombre" required class="w-full bg-[#282828] border border-transparent rounded px-3 py-2 text-white focus:outline-none focus:border-blue-500 transition" />
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-400 mb-1">Artista</label>
+        <select name="artista" required class="w-full bg-[#282828] border border-transparent rounded px-3 py-2 text-white focus:outline-none focus:border-blue-500 transition appearance-none">
+          <option value="">Cargando artistas...</option>
+        </select>
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-400 mb-1">Imagen</label>
+        <input type="file" name="imagen" class="w-full bg-[#282828] text-gray-300 rounded px-3 py-2 file:mr-4 file:py-1 file:px-3 file:rounded file:border-0 file:bg-gray-600 file:text-white" />
+      </div>
+      <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded transition">Actualizar (PUT)</button>
+    </form>
 
-  <!-- PATCH -->
-  <form id="form-patch-album" enctype="multipart/form-data" class="mt-3">
-    <h4 class="text-white">Actualizar Álbum (PATCH)</h4>
-    <div class="mb-3">
-      <label class="form-label text-white">ID</label>
-      <input type="number" id="patch-album-id" class="form-control" required />
-    </div>
-    <div class="mb-3">
-      <label class="form-label text-white">Nombre</label>
-      <input type="text" name="nombre" class="form-control" />
-    </div>
-    <div class="mb-3">
-      <label class="form-label text-white">Artista ID</label>
-      <input type="number" name="artista" class="form-control" />
-    </div>
-    <div class="mb-3">
-      <label class="form-label text-white">Imagen</label>
-      <input type="file" name="imagen" class="form-control" />
-    </div>
-    <button class="btn btn-warning">Actualizar (PATCH)</button>
-  </form>
+    <form id="form-patch-album" enctype="multipart/form-data" class="bg-[#181818] p-6 rounded-lg border border-[#282828]">
+      <h4 class="text-xl font-semibold text-white mb-4 border-b border-gray-700 pb-2">Actualizar Álbum (PATCH)</h4>
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-400 mb-1">ID del Álbum</label>
+        <input type="number" id="patch-album-id" required class="w-full bg-[#282828] rounded px-3 py-2 text-white focus:outline-none focus:border-yellow-500 transition" />
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-400 mb-1">Nombre</label>
+        <input type="text" name="nombre" class="w-full bg-[#282828] rounded px-3 py-2 text-white focus:outline-none focus:border-yellow-500 transition" />
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-400 mb-1">Artista</label>
+        <select name="artista" class="w-full bg-[#282828] rounded px-3 py-2 text-white focus:outline-none focus:border-yellow-500 transition appearance-none">
+          <option value="">(Sin cambiar)</option>
+        </select>
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-400 mb-1">Imagen</label>
+        <input type="file" name="imagen" class="w-full bg-[#282828] text-gray-300 rounded px-3 py-2 file:mr-4 file:py-1 file:px-3 file:rounded file:border-0 file:bg-gray-600 file:text-white" />
+      </div>
+      <button class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 px-6 rounded transition">Actualizar (PATCH)</button>
+    </form>
 
-  <!-- Delete -->
-  <form id="form-delete-album" class="mt-3">
-    <h4 class="text-white">Eliminar Álbum</h4>
-    <div class="mb-3">
-      <label class="form-label text-white">ID</label>
-      <input type="number" id="delete-album-id" class="form-control" required />
-    </div>
-    <button class="btn btn-danger">Eliminar</button>
-  </form>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <form id="form-delete-album" class="bg-[#181818] p-6 rounded-lg border border-red-900/30">
+        <h4 class="text-xl font-semibold text-red-400 mb-4 border-b border-gray-700 pb-2">Eliminar Álbum</h4>
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-400 mb-1">ID</label>
+          <input type="number" id="delete-album-id" required class="w-full bg-[#282828] rounded px-3 py-2 text-white focus:outline-none focus:border-red-500 transition" />
+        </div>
+        <button class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded transition w-full">Eliminar</button>
+      </form>
 
-  <!-- Search -->
-  <form id="form-search-album" class="mt-3">
-    <h4 class="text-white">Buscar Álbum</h4>
-    <div class="mb-3">
-      <label class="form-label text-white">Nombre</label>
-      <input type="text" name="nombre" class="form-control" />
+      <form id="form-search-album" class="bg-[#181818] p-6 rounded-lg border border-[#282828]">
+        <h4 class="text-xl font-semibold text-white mb-4 border-b border-gray-700 pb-2">Buscar Álbum</h4>
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-400 mb-1">Nombre</label>
+          <input type="text" name="nombre" class="w-full bg-[#282828] rounded px-3 py-2 text-white focus:outline-none focus:border-gray-400 transition" />
+        </div>
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-400 mb-1">Filtrar por Artista</label>
+          <select name="artista" class="w-full bg-[#282828] rounded px-3 py-2 text-white focus:outline-none focus:border-gray-400 transition appearance-none">
+            <option value="">Cualquiera</option>
+          </select>
+        </div>
+        <button class="bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-6 rounded transition w-full">Buscar</button>
+      </form>
     </div>
-    <div class="mb-3">
-      <label class="form-label text-white">Artista ID</label>
-      <input type="number" name="artista" class="form-control" />
-    </div>
-    <button class="btn btn-info">Buscar</button>
-  </form>
 
-  <div id="resultado" class="mt-3 text-white"></div>
-</div>
+    <div id="resultado" class="mt-8 bg-black text-green-400 font-mono p-4 rounded-lg overflow-x-auto text-sm border border-gray-800 min-h-[100px]"></div>
+  </div>
+</main>
 
 <script>
   const resultado = document.getElementById("resultado");
@@ -103,66 +113,55 @@
     }
   };
 
-  // Insert
-  document
-    .getElementById("form-insert-album")
-    .addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const fd = new FormData(e.target);
-      const res = await fetch("/albumes", { method: "POST", body: fd });
-      showResult(res);
-    });
+  // Cargar Artistas Dinámicamente
+  document.addEventListener("DOMContentLoaded", async () => {
+    try {
+      const res = await fetch("/artistas/search", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ nombre: "" }) });
+      const artistas = await res.json();
+      let optionsHtml = `<option value="">Seleccione un artista...</option>`;
+      artistas.forEach(a => optionsHtml += `<option value="${a.id}">${a.nombre} (ID: ${a.id})</option>`);
 
-  // PUT
-  document
-    .getElementById("form-put-album")
-    .addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const id = document.getElementById("put-album-id").value;
-      const fd = new FormData(e.target);
-      fd.delete("id"); // id solo va en URL
-      const res = await fetch("/albumes/" + id, { method: "PUT", body: fd });
-      showResult(res);
-    });
-
-  // PATCH
-  document
-    .getElementById("form-patch-album")
-    .addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const id = document.getElementById("patch-album-id").value;
-      const fd = new FormData(e.target);
-      fd.delete("id"); // id solo va en URL
-      const res = await fetch("/albumes/" + id, { method: "PATCH", body: fd });
-      showResult(res);
-    });
-
-  // DELETE
-  document
-    .getElementById("form-delete-album")
-    .addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const id = document.getElementById("delete-album-id").value;
-      const res = await fetch("/albumes/" + id, { method: "DELETE" });
-      showResult(res);
-    });
-
-  // SEARCH
-  document
-    .getElementById("form-search-album")
-    .addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const body = {
-        nombre: e.target.nombre.value,
-        artista: e.target.artista.value || undefined,
-      };
-      const res = await fetch("/albumes/search", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
+      document.querySelectorAll('select[name="artista"]').forEach(select => {
+        // Preservamos la primera opción para PATCH y SEARCH
+        const firstOption = select.querySelector('option');
+        if(firstOption.value === "") {
+          select.innerHTML = `<option value="">${firstOption.textContent}</option>` + artistas.map(a => `<option value="${a.id}">${a.nombre}</option>`).join('');
+        } else {
+          select.innerHTML = optionsHtml;
+        }
       });
-      showResult(res);
-    });
+    } catch (err) { console.error("Error cargando artistas", err); }
+  });
+
+  document.getElementById("form-insert-album").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    showResult(await fetch("/albumes", { method: "POST", body: new FormData(e.target) }));
+  });
+
+  document.getElementById("form-put-album").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const id = document.getElementById("put-album-id").value;
+    const fd = new FormData(e.target); fd.delete("id");
+    showResult(await fetch("/albumes/" + id, { method: "PUT", body: fd }));
+  });
+
+  document.getElementById("form-patch-album").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const id = document.getElementById("patch-album-id").value;
+    const fd = new FormData(e.target); fd.delete("id");
+    showResult(await fetch("/albumes/" + id, { method: "PATCH", body: fd }));
+  });
+
+  document.getElementById("form-delete-album").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    showResult(await fetch("/albumes/" + document.getElementById("delete-album-id").value, { method: "DELETE" }));
+  });
+
+  document.getElementById("form-search-album").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const body = { nombre: e.target.nombre.value, artista: e.target.artista.value || undefined };
+    showResult(await fetch("/albumes/search", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }));
+  });
 </script>
 
 <%- include('../partials/footer') %>

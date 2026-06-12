@@ -1,5 +1,12 @@
 const { Sequelize } = require("sequelize");
 
+// Config SQLite
+const sequelize = new Sequelize({
+  dialect: "sqlite",
+  storage: "database.sqlite", // El archivo se creará automáticamente en la raíz de tu proyecto
+});
+
+/* // Configuración anterior de MariaDB comentada o eliminada
 const sequelize = new Sequelize(
   process.env.MYSQL_DATABASE,
   process.env.MYSQL_USER,
@@ -13,12 +20,7 @@ const sequelize = new Sequelize(
     },
   }
 );
-
-// // Config SQLite
-// const sequelize = new Sequelize({
-//     dialect: 'sqlite',
-//     storage: 'database.sqlite'
-// });
+*/
 
 sequelize
   .authenticate()
