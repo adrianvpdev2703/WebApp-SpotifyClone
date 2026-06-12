@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./views/**/*.ejs", // Busca clases de Tailwind en todas tus vistas
+    "./src/frontend/views/**/*.ejs", // <- Nueva ruta
   ],
   theme: {
     extend: {},

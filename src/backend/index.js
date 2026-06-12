@@ -9,11 +9,11 @@ const app = express();
 const port = 3000;
 
 // Configurar EJS
+app.set("views", path.join(__dirname, "../frontend/views"));
 app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
 
 // Carpetas públicas
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "../frontend/public")));
 
 // parse application/x-www-form-urlencoded y json
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -25,7 +25,7 @@ app.use(
     limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB
     abortOnLimit: true,
     createParentPath: true,
-  })
+  }),
 );
 
 // Base de datos
