@@ -113,24 +113,34 @@
     }
   };
 
-  // Cargar Artistas Dinámicamente
+ // Cargar Artistas Dinámicamente
   document.addEventListener("DOMContentLoaded", async () => {
     try {
-      const res = await fetch("/artistas/search", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ nombre: "" }) });
+      // USAMOS GET /artistas en lugar del search
+      const res = await fetch("/artistas");
+      if (!res.ok) throw new Error("Error en la red al buscar artistas");
+
       const artistas = await res.json();
       let optionsHtml = `<option value="">Seleccione un artista...</option>`;
       artistas.forEach(a => optionsHtml += `<option value="${a.id}">${a.nombre} (ID: ${a.id})</option>`);
 
       document.querySelectorAll('select[name="artista"]').forEach(select => {
-        // Preservamos la primera opción para PATCH y SEARCH
         const firstOption = select.querySelector('option');
         if(firstOption.value === "") {
+          // Para el form de INSERT (requerido)
           select.innerHTML = `<option value="">${firstOption.textContent}</option>` + artistas.map(a => `<option value="${a.id}">${a.nombre}</option>`).join('');
         } else {
+          // Para PATCH y SEARCH (opcional)
           select.innerHTML = optionsHtml;
         }
       });
-    } catch (err) { console.error("Error cargando artistas", err); }
+    } catch (err) {
+      console.error("Error cargando artistas", err);
+      // Feedback visual si falla
+      document.querySelectorAll('select[name="artista"]').forEach(select => {
+        select.innerHTML = `<option value="">Error al cargar artistas</option>`;
+      });
+    }
   });
 
   document.getElementById("form-insert-album").addEventListener("submit", async (e) => {

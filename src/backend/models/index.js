@@ -7,6 +7,8 @@ const Artista = require("./artista")(sequelize);
 const Genero = require("./genero")(sequelize);
 const ArtistaxGenero = require("./artistaxgenero")(sequelize);
 
+const Usuario = require("./usuario");
+
 // Un Álbum pertenece a un Artista
 Album.belongsTo(Artista, { foreignKey: "artista", as: "artistaData" });
 Artista.hasMany(Album, { foreignKey: "artista", as: "albumes" });
@@ -28,6 +30,7 @@ module.exports = {
   Artista,
   Genero,
   ArtistaxGenero,
+  Usuario,
   sequelize,
   Sequelize: sequelize.Sequelize,
 };

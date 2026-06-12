@@ -128,7 +128,10 @@
   // Cargar Álbumes Dinámicamente
   document.addEventListener("DOMContentLoaded", async () => {
     try {
-      const res = await fetch("/albumes/search", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ nombre: "" }) });
+      // USAMOS GET /albumes
+      const res = await fetch("/albumes");
+      if (!res.ok) throw new Error("Error en la red al buscar álbumes");
+
       const albumes = await res.json();
 
       document.querySelectorAll('select[name="album"]').forEach(select => {
@@ -137,7 +140,12 @@
           select.innerHTML = `<option value="">${firstOption.textContent}</option>` + albumes.map(a => `<option value="${a.id}">${a.nombre}</option>`).join('');
         }
       });
-    } catch (err) { console.error("Error cargando álbumes", err); }
+    } catch (err) {
+      console.error("Error cargando álbumes", err);
+      document.querySelectorAll('select[name="album"]').forEach(select => {
+        select.innerHTML = `<option value="">Error al cargar álbumes</option>`;
+      });
+    }
   });
 
   document.getElementById("form-insert-cancion").addEventListener("submit", async (e) => {

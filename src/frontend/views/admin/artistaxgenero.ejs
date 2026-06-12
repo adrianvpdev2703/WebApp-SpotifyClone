@@ -97,10 +97,13 @@
   // Cargar Artistas y Géneros Dinámicamente
   document.addEventListener("DOMContentLoaded", async () => {
     try {
+      // USAMOS LOS GET GLOBALES
       const [resArt, resGen] = await Promise.all([
-        fetch("/artistas/search", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ nombre: "" }) }),
-        fetch("/generos/search", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ nombre: "" }) })
+        fetch("/artistas"),
+        fetch("/generos")
       ]);
+
+      if (!resArt.ok || !resGen.ok) throw new Error("Fallo al obtener datos del servidor");
 
       const artistas = await resArt.json();
       const generos = await resGen.json();
@@ -119,7 +122,12 @@
         }
       });
 
-    } catch (err) { console.error("Error cargando dependencias", err); }
+    } catch (err) {
+      console.error("Error cargando dependencias", err);
+      document.querySelectorAll('select').forEach(select => {
+        select.innerHTML = `<option value="">Error de carga</option>`;
+      });
+    }
   });
 
   // INSERT

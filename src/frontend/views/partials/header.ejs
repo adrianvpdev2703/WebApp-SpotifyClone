@@ -5,54 +5,179 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= title %></title>
     <link rel="stylesheet" href="/css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
   </head>
-  <body class="bg-gray-900 text-white min-h-screen">
-    <nav class="bg-[#1db954] shadow-md">
+  <body class="bg-[#121212] text-white min-h-screen font-sans">
+    <nav
+      class="bg-black/80 backdrop-blur-md sticky top-0 border-b border-[#282828] z-50"
+    >
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
-          <div class="flex-shrink-0">
+          <div class="flex-shrink-0 flex items-center space-x-4">
             <a
               href="/"
-              class="text-white font-bold text-2xl tracking-tight hover:text-gray-100 transition"
+              class="text-white font-bold text-2xl tracking-tight hover:text-[#1db954] transition duration-300"
               >Spotify Clone</a
             >
-          </div>
-
-          <div class="hidden md:block">
-            <div class="ml-4 flex items-center md:ml-6">
-              <a
-                href="/admin"
-                class="text-white hover:bg-green-600 px-3 py-2 rounded-md text-sm font-semibold transition shadow-sm"
-              >
-                Admin
-              </a>
-            </div>
-          </div>
-
-          <div class="-mr-2 flex md:hidden">
-            <button
-              type="button"
-              class="bg-[#1db954] inline-flex items-center justify-center p-2 rounded-md text-white hover:bg-green-600 focus:outline-none"
+            <a
+              href="/admin"
+              class="text-xs text-gray-400 hover:text-white border border-gray-600 rounded-full px-3 py-1 transition"
             >
-              <svg
-                class="h-6 w-6"
-                stroke="currentColor"
-                fill="none"
-                viewBox="0 0 24 24"
+              Admin
+            </a>
+          </div>
+
+          <div
+            class="flex items-center space-x-4 bg-[#181818] px-4 py-1.5 rounded-full border border-[#282828]"
+          >
+            <div class="flex flex-col items-end">
+              <span id="user-username" class="text-xs font-bold text-white"
+                >Cargando...</span
               >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            </button>
+              <span
+                id="user-xp-text"
+                class="text-[10px] text-gray-400 font-mono"
+                >0/100 XP</span
+              >
+            </div>
+
+            <div
+              class="w-24 h-2 bg-gray-800 rounded-full overflow-hidden hidden sm:block"
+            >
+              <div
+                id="user-xp-bar"
+                class="h-full bg-[#1db954] transition-all duration-500"
+                style="width: 0%"
+              ></div>
+            </div>
+
+            <span
+              id="user-level-badge"
+              class="bg-[#1db954] text-black text-xs font-black px-2.5 py-1 rounded-full shadow-md animate__animated"
+            >
+              Lv. 1
+            </span>
           </div>
         </div>
       </div>
     </nav>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+      <script>
+        // Variable global para mantener el estado del usuario en el cliente
+        let currentUser = null;
+
+        // 1. Inicializar sesión del usuario llamando al login-test del backend
+        async function initUserGamification() {
+          try {
+            const res = await fetch("/usuarios/login-test", { method: "POST" });
+            currentUser = await res.json();
+            updateGamificationUI();
+          } catch (err) {
+            console.error(
+              "Error al cargar la información de gamificación:",
+              err,
+            );
+          }
+        }
+
+        // 2. Pintar los datos del Store del backend en los elementos del DOM
+        function updateGamificationUI() {
+          if (!currentUser) return;
+
+          document.getElementById("user-username").innerText =
+            currentUser.username;
+          document.getElementById("user-level-badge").innerText =
+            `Lv. ${currentUser.nivel}`;
+
+          const xpActual = currentUser.xp_actual;
+          const xpRequerida = currentUser.nivel * 100;
+          const porcentaje = Math.min((xpActual / xpRequerida) * 100, 100);
+
+          document.getElementById("user-xp-bar").style.width = `${porcentaje}%`;
+          document.getElementById("user-xp-text").innerText =
+            `${xpActual}/${xpRequerida} XP`;
+        }
+
+        // 3. Crear una alerta flotante (Toast) espectacular cuando suba de nivel
+        function lanzarNotificacionLevelUp(nuevoNivel) {
+          // Animación extra al badge del navbar
+          const badge = document.getElementById("user-level-badge");
+          badge.classList.add("animate__bounceIn", "bg-yellow-400");
+          setTimeout(() => badge.classList.remove("animate__bounceIn"), 1000);
+
+          // Contenedor del Toast flotante
+          const toast = document.createElement("div");
+          toast.className =
+            "fixed bottom-24 right-5 bg-gradient-to-r from-[#1db954] to-green-600 text-black font-black px-6 py-4 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.7)] z-50 flex items-center space-x-4 border-2 border-white animate__animated animate__backInUp";
+          toast.innerHTML = `
+      <span class="text-3xl">🎉</span>
+      <div>
+        <p class="text-sm uppercase tracking-widest font-black text-white drop-shadow-md">¡SUBISTE DE NIVEL!</p>
+        <p class="text-xs font-bold text-black/90">Adrian, has alcanzado el rango: <span class="underline">Nivel ${nuevoNivel}</span></p>
+      </div>
+    `;
+          document.body.appendChild(toast);
+
+          // Desvanecer y remover el Toast después de 5 segundos
+          setTimeout(() => {
+            toast.classList.replace(
+              "animate__backInUp",
+              "animate__backOutDown",
+            );
+            setTimeout(() => toast.remove(), 1000);
+          }, 5000);
+        }
+
+        // 4. CAPTURA GLOBAL DE AUDIO: Escucha de forma automática cuando CUALQUIER canción termina
+        // Usamos la fase de captura (true) porque el evento 'ended' de HTML5 no burbujea de forma nativa.
+        document.addEventListener(
+          "ended",
+          async (event) => {
+            if (event.target.tagName === "AUDIO" && currentUser) {
+              console.log(
+                `Canción completada de forma exitosa. Enviando XP al Store del Backend...`,
+              );
+
+              try {
+                const res = await fetch("/usuarios/add-xp", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ id: currentUser.id, xp_ganada: 20 }), // +20 XP por canción escuchada
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                  // Sincronizamos la memoria local con el nuevo estado devuelto por Redux
+                  currentUser.xp_actual = data.usuario.xp_actual;
+                  const nivelAnterior = currentUser.nivel;
+                  currentUser.nivel = data.usuario.nivel;
+
+                  updateGamificationUI();
+
+                  // Si el reducer de Redux detectó subida de nivel, disparamos el efecto visual
+                  if (data.subioNivel) {
+                    lanzarNotificacionLevelUp(data.usuario.nivel);
+                  }
+                }
+              } catch (err) {
+                console.error(
+                  "Error al procesar recompensa de experiencia:",
+                  err,
+                );
+              }
+            }
+          },
+          true,
+        );
+
+        // Iniciar al cargar el documento
+        document.addEventListener("DOMContentLoaded", initUserGamification);
+      </script>
+    </div>
   </body>
 </html>

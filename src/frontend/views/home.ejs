@@ -1,25 +1,49 @@
-<%- include('partials/header') %>
+<%- include('partials/header', { title: 'Inicio - Spotify Clone' }) %>
 
 <main class="pb-24 pt-6">
-  <h1 class="text-3xl font-bold text-white mb-6">Buenas tardes</h1>
+  <h1 class="text-3xl font-bold text-white mb-6">Tu música favorita</h1>
 
-  <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
-    <div
-      class="bg-white/10 hover:bg-white/20 transition cursor-pointer rounded flex items-center overflow-hidden group"
-    >
-      <div
-        class="w-20 h-20 bg-gray-700 flex-shrink-0 shadow-[8px_0_20px_rgba(0,0,0,0.5)]"
-      ></div>
-      <h3 class="text-white font-bold px-4 truncate">Lo Mejor del Rock</h3>
-      <button
-        class="ml-auto mr-4 opacity-0 group-hover:opacity-100 bg-[#1db954] text-black rounded-full p-3 shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-all"
-      >
-        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M8 5v14l11-7z" />
-        </svg>
-      </button>
-    </div>
+  <div id="canciones-container" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
+    <p class="text-gray-400">Cargando música...</p>
   </div>
 </main>
+
+<script>
+  // Cargar canciones al montar la vista
+  async function cargarCanciones() {
+    try {
+      const res = await fetch('/canciones'); // Tu ruta GET existente
+      const canciones = await res.json();
+      const container = document.getElementById('canciones-container');
+      container.innerHTML = '';
+
+      canciones.forEach(c => {
+        container.innerHTML += `
+          <div class="bg-[#181818] hover:bg-[#282828] transition cursor-pointer rounded flex flex-col p-4 group">
+            <div class="w-full aspect-square bg-gray-700 rounded mb-4 overflow-hidden">
+               <img src="${c.imagen || ''}" class="w-full h-full object-cover">
+            </div>
+            <h3 class="text-white font-bold truncate">${c.nombre}</h3>
+            <p class="text-gray-400 text-sm mb-4">${c.albumData?.nombre || 'Álbum desconocido'}</p>
+
+            <audio controls class="w-full mt-auto" onended="handleSongEnded()">
+                <source src="${c.archivo}" type="audio/mpeg">
+            </audio>
+          </div>
+        `;
+      });
+    } catch (err) {
+      console.error("Error cargando canciones:", err);
+    }
+  }
+
+  // Esta función es llamada por el onended del tag <audio>
+  function handleSongEnded() {
+    // El evento global 'ended' en header.ejs lo detectará automáticamente
+    console.log("Canción finalizada, enviando señal a Gamificación...");
+  }
+
+  document.addEventListener('DOMContentLoaded', cargarCanciones);
+</script>
 
 <%- include('partials/footer') %>

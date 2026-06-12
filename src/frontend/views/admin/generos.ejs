@@ -80,7 +80,82 @@
 </main>
 
 <script>
-// ... (mismo código JS que ya tenías)
+  const resultado = document.getElementById("resultado");
+
+  // Función auxiliar para manejar respuestas
+  async function parseResponse(res) {
+    const text = await res.text();
+    try {
+      const json = JSON.parse(text);
+      if (!res.ok) throw new Error(json.error || JSON.stringify(json));
+      return JSON.stringify(json, null, 2);
+    } catch {
+      if (!res.ok) throw new Error(text || "Error en la solicitud");
+      return text;
+    }
+  }
+
+  // INSERT
+  document.getElementById("form-insert-genero").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    resultado.textContent = "Procesando...";
+    try {
+      const res = await fetch("/generos", { method: "POST", body: new FormData(e.target) });
+      resultado.innerHTML = "<pre>" + await parseResponse(res) + "</pre>";
+    } catch (err) { resultado.textContent = "Error: " + err.message; }
+  });
+
+  // PUT
+  document.getElementById("form-put-genero").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const id = e.target.id.value; // Asegúrate de que el input tenga el name="id"
+    const fd = new FormData(e.target);
+    fd.delete("id"); // El ID va en la URL, no en el body
+    resultado.textContent = "Actualizando (PUT)...";
+    try {
+      const res = await fetch(`/generos/${id}`, { method: "PUT", body: fd });
+      resultado.innerHTML = "<pre>" + await parseResponse(res) + "</pre>";
+    } catch (err) { resultado.textContent = "Error: " + err.message; }
+  });
+
+  // PATCH
+  document.getElementById("form-patch-genero").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const id = e.target.id.value;
+    const fd = new FormData(e.target);
+    fd.delete("id");
+    resultado.textContent = "Actualizando (PATCH)...";
+    try {
+      const res = await fetch(`/generos/${id}`, { method: "PATCH", body: fd });
+      resultado.innerHTML = "<pre>" + await parseResponse(res) + "</pre>";
+    } catch (err) { resultado.textContent = "Error: " + err.message; }
+  });
+
+  // DELETE
+  document.getElementById("form-delete-genero").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const id = e.target.id.value;
+    resultado.textContent = "Eliminando...";
+    try {
+      const res = await fetch(`/generos/${id}`, { method: "DELETE" });
+      resultado.innerHTML = "<pre>" + await parseResponse(res) + "</pre>";
+    } catch (err) { resultado.textContent = "Error: " + err.message; }
+  });
+
+  // SEARCH (Este es POST según tus rutas, así que va con JSON)
+  document.getElementById("form-search-genero").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    resultado.textContent = "Buscando...";
+    const body = { nombre: e.target.nombre.value };
+    try {
+      const res = await fetch("/generos/search", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+      resultado.innerHTML = "<pre>" + await parseResponse(res) + "</pre>";
+    } catch (err) { resultado.textContent = "Error: " + err.message; }
+  });
 </script>
 
 <%- include('../partials/footer') %>
