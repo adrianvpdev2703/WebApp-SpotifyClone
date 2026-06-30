@@ -7,4 +7,5 @@ module.exports = (app) => {
   require("./admin.routes")(app);
   require("./search.routes")(app);
   require("./usuario.routes")(app);
+  require("./comunidad.routes")(app);
 };
