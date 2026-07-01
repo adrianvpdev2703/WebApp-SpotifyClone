@@ -1,0 +1,232 @@
+{
+  "info": {
+    "name": "Spotify Clone - Gamificación y Comunidades",
+    "description": "Colección completa para probar el flujo de usuarios, rachas, rankings y comunidades.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Creación de Usuarios",
+      "description": "Crea 5 usuarios para probar el sistema social.",
+      "item": [
+        {
+          "name": "Crear Usuario 1 (AdrianTester)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"AdrianTester\",\n    \"email\": \"adrian@spotifyclone.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/registro",
+              "host": ["{{baseUrl}}"],
+              "path": ["usuarios", "registro"]
+            }
+          }
+        },
+        {
+          "name": "Crear Usuario 2 (GamerPro)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"GamerPro\",\n    \"email\": \"gamer@spotifyclone.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/registro",
+              "host": ["{{baseUrl}}"],
+              "path": ["usuarios", "registro"]
+            }
+          }
+        },
+        {
+          "name": "Crear Usuario 3 (Melomano)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"Melomano\",\n    \"email\": \"musica@spotifyclone.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/registro",
+              "host": ["{{baseUrl}}"],
+              "path": ["usuarios", "registro"]
+            }
+          }
+        },
+        {
+          "name": "Crear Usuario 4 (LinuxFan)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"LinuxFan\",\n    \"email\": \"tux@spotifyclone.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/registro",
+              "host": ["{{baseUrl}}"],
+              "path": ["usuarios", "registro"]
+            }
+          }
+        },
+        {
+          "name": "Crear Usuario 5 (DevJunior)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"DevJunior\",\n    \"email\": \"dev@spotifyclone.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/registro",
+              "host": ["{{baseUrl}}"],
+              "path": ["usuarios", "registro"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Gamificación y Ranking",
+      "item": [
+        {
+          "name": "Registrar Canción (Activar Racha y Combo)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"id\": 1,\n    \"sinPausasNiSaltos\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/registrarCancionEscuchada",
+              "host": ["{{baseUrl}}"],
+              "path": ["usuarios", "registrarCancionEscuchada"]
+            }
+          }
+        },
+        {
+          "name": "Registrar Canción (Romper Combo)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"id\": 1,\n    \"sinPausasNiSaltos\": false\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/registrarCancionEscuchada",
+              "host": ["{{baseUrl}}"],
+              "path": ["usuarios", "registrarCancionEscuchada"]
+            }
+          }
+        },
+        {
+          "name": "Ver Ranking Global (Leaderboard)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/ranking",
+              "host": ["{{baseUrl}}"],
+              "path": ["usuarios", "ranking"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Comunidades y Chats",
+      "item": [
+        {
+          "name": "1. Crear Comunidad (Sala de Chat)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nombre\": \"Rockeros Sin Pausa\",\n    \"descripcion\": \"Solo los que mantienen combos de XP altos\",\n    \"es_privada\": false,\n    \"creador_id\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/comunidades/crear",
+              "host": ["{{baseUrl}}"],
+              "path": ["comunidades", "crear"]
+            }
+          }
+        },
+        {
+          "name": "2. Unir Usuario 2 a la Comunidad",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"usuario_id\": 2,\n    \"comunidad_id\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/comunidades/unirse",
+              "host": ["{{baseUrl}}"],
+              "path": ["comunidades", "unirse"]
+            }
+          }
+        },
+        {
+          "name": "3. Enviar Mensaje (Chat Normal)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"usuario_id\": 1,\n    \"comunidad_id\": 1,\n    \"contenido\": \"¡Hola a todos! Bienvenidos al grupo.\",\n    \"es_cancion\": false\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/comunidades/mensaje",
+              "host": ["{{baseUrl}}"],
+              "path": ["comunidades", "mensaje"]
+            }
+          }
+        },
+        {
+          "name": "4. Enviar Mensaje (Compartir Canción)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"usuario_id\": 2,\n    \"comunidad_id\": 1,\n    \"contenido\": \"Les recomiendo escuchar esta joya: Yung Lean - Agony\",\n    \"es_cancion\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/comunidades/mensaje",
+              "host": ["{{baseUrl}}"],
+              "path": ["comunidades", "mensaje"]
+            }
+          }
+        },
+        {
+          "name": "5. Cargar Historial del Chat",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/comunidades/1/mensajes",
+              "host": ["{{baseUrl}}"],
+              "path": ["comunidades", "1", "mensajes"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
