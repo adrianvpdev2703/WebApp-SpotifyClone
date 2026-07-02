@@ -7,9 +7,10 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"npm run start\" \"npm run build:css\"",
-    "start": "nodemon src/backend/index.js",
-    "build:css": "tailwindcss -i ./src/frontend/public/css/input.css -o ./src/frontend/public/css/style.css --watch",
+    "dev": "concurrently -c \"cyan.bold,magenta.bold\" -n \"BACKEND,FRONTEND\" \"yarn dev:back\" \"yarn dev:front\"",
+    "dev:back": "nodemon src/backend/index.js",
+    "dev:front": "cd src/frontend && yarn dev",
+    "start": "node src/backend/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
