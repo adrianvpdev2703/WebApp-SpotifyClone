@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Header } from "./components/Header";
-import { useGamificationStore } from "./store/userGamificationStore"; // <-- Nombre de archivo corregido
+import { useGamificationStore } from "./store/userGamificationStore";
 
 export default function App() {
   const updateUser = useGamificationStore((state) => state.updateUser);
@@ -18,7 +18,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <Header /> {/* <-- ¡AQUÍ ESTÁ EL HEADER AHORA SÍ EN USO! */}
+      <Header />
       <main className="p-8">
         <h1>App</h1>
       </main>
