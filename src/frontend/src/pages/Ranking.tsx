@@ -16,9 +16,7 @@ const tierBg: Record<string, string> = {
 };
 
 const tierIcons: Record<string, string> = {
-  "1": "🥇",
-  "2": "🥈",
-  "3": "🥉",
+  "1": "🥇", "2": "🥈", "3": "🥉",
 };
 
 export const Ranking = () => {
@@ -28,16 +26,13 @@ export const Ranking = () => {
   useEffect(() => {
     const fetchRanking = async () => {
       try {
-        const res = await fetch("http://localhost:3000/usuarios/ranking");
+        const res = await fetch("http://localhost:3006/usuarios/ranking");
         if (res.ok) {
           const data = await res.json();
           setRanking(data.ranking || []);
         }
-      } catch (error) {
-        console.error("Error cargando ranking:", error);
-      } finally {
-        setLoading(false);
-      }
+      } catch (error) { console.error(error); }
+      setLoading(false);
     };
     fetchRanking();
   }, []);
@@ -66,43 +61,23 @@ export const Ranking = () => {
           {ranking.map((user, index) => {
             const pos = index + 1;
             const isTop3 = pos <= 3;
-
             return (
-              <div
-                key={user.id}
-                className={`flex items-center gap-4 p-4 rounded-lg border transition ${isTop3 ? tierBg[String(pos)] : "bg-zinc-800/30 border-zinc-800 hover:bg-zinc-800/50"}`}
-              >
+              <div key={user.id}
+                className={`flex items-center gap-4 p-4 rounded-lg border transition ${isTop3 ? tierBg[String(pos)] : "bg-zinc-800/30 border-zinc-800 hover:bg-zinc-800/50"}`}>
                 <div className="w-10 text-center">
-                  {isTop3 ? (
-                    <span className="text-2xl">{tierIcons[String(pos)]}</span>
-                  ) : (
-                    <span className="text-gray-500 font-bold text-lg">{pos}</span>
-                  )}
+                  {isTop3 ? <span className="text-2xl">{tierIcons[String(pos)]}</span> : <span className="text-gray-500 font-bold text-lg">{pos}</span>}
                 </div>
-
                 <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center text-white font-bold text-sm">
                   {user.username.charAt(0).toUpperCase()}
                 </div>
-
                 <div className="flex-1 min-w-0">
                   <h3 className="font-bold text-white truncate">{user.username}</h3>
-                  <p className="text-xs text-gray-400">
-                    Nivel {user.nivel} · {user.xp_actual} XP
-                  </p>
+                  <p className="text-xs text-gray-400">Nivel {user.nivel} · {user.xp_actual} XP</p>
                 </div>
-
                 <div className="flex items-center gap-4 text-sm">
-                  <div className="hidden sm:flex items-center gap-1 text-orange-400">
-                    <span>🔥</span>
-                    <span>{user.racha_dias}d</span>
-                  </div>
-                  <div className="flex items-center gap-1 text-yellow-400">
-                    <span>💎</span>
-                    <span>{user.puntos_tienda}</span>
-                  </div>
-                  <div className="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-xs font-bold border border-green-500/30 min-w-[60px] text-center">
-                    Lv.{user.nivel}
-                  </div>
+                  <div className="hidden sm:flex items-center gap-1 text-orange-400"><span>🔥</span><span>{user.racha_dias}d</span></div>
+                  <div className="flex items-center gap-1 text-yellow-400"><span>💎</span><span>{user.puntos_tienda}</span></div>
+                  <div className="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-xs font-bold border border-green-500/30 min-w-[60px] text-center">Lv.{user.nivel}</div>
                 </div>
               </div>
             );

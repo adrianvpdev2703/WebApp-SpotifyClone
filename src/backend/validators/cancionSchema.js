@@ -2,21 +2,21 @@ const Joi = require("joi");
 
 const cancionSchema = Joi.object({
   nombre: Joi.string().required(),
-  album: Joi.number().integer().required(),
-  imagen: Joi.string().optional(),
-  archivo: Joi.string().optional(),
+  album: Joi.alternatives().try(Joi.number().integer(), Joi.string()).required(),
+  imagen: Joi.string().optional().allow(""),
+  archivo: Joi.string().optional().allow(""),
 });
 
 const cancionOptionalSchema = Joi.object({
   nombre: Joi.string().optional(),
-  album: Joi.number().integer().optional(),
-  imagen: Joi.string().optional(),
-  archivo: Joi.string().optional(),
+  album: Joi.alternatives().try(Joi.number().integer(), Joi.string()).optional(),
+  imagen: Joi.string().optional().allow(""),
+  archivo: Joi.string().optional().allow(""),
 });
 
 const cancionSearchSchema = Joi.object({
   nombre: Joi.string().optional(),
-  album: Joi.number().integer().optional(),
+  album: Joi.alternatives().try(Joi.number().integer(), Joi.string()).optional(),
 });
 
 module.exports = {

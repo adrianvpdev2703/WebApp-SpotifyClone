@@ -7,6 +7,7 @@ import { Login } from "./pages/Login";
 import { Admin } from "./pages/Admin";
 import { Shop } from "./pages/Shop";
 import { Ranking } from "./pages/Ranking";
+import { Communities } from "./pages/Communities";
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
           <Route path="/admin" element={<Admin />} />
           <Route path="/tienda" element={<Shop />} />
           <Route path="/ranking" element={<Ranking />} />
+          <Route path="/comunidades" element={<Communities />} />
         </Routes>
       </main>
       <Player />

@@ -7,7 +7,7 @@ const cors = require("cors");
 const db = require("./models");
 
 const app = express();
-const port = 3000;
+const port = 3006;
 
 // ==========================================
 // 1. Configurar CORS (Para permitir a Vite/React conectarse)

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { useGamificationStore } from "../store/userGamificationStore";
+import { useAppSelector, useAppDispatch } from "../store/hooks";
+import { updateUser, addNotification } from "../store/gamificationSlice";
 
 interface ShopItem {
   id: number;
@@ -15,76 +16,58 @@ export const Shop = () => {
   const [loading, setLoading] = useState(true);
   const [buying, setBuying] = useState<number | null>(null);
 
-  const userId = useGamificationStore((state) => state.id);
-  const puntos = useGamificationStore((state) => state.puntos);
-  const updateUser = useGamificationStore((state) => state.updateUser);
-  const addNotification = useGamificationStore((state) => state.addNotification);
+  const dispatch = useAppDispatch();
+  const userId = useAppSelector((s) => s.gamification.id);
+  const puntos = useAppSelector((s) => s.gamification.puntos);
 
-  useEffect(() => {
-    fetchItems();
-  }, []);
+  useEffect(() => { fetchItems(); }, []);
 
   const fetchItems = async () => {
     try {
-      const res = await fetch("http://localhost:3000/tienda/items");
-      if (res.ok) {
-        const data = await res.json();
-        setItems(data);
-      }
-    } catch (error) {
-      console.error("Error cargando tienda:", error);
-    } finally {
-      setLoading(false);
-    }
+      const res = await fetch("http://localhost:3006/tienda/items");
+      if (res.ok) setItems(await res.json());
+    } catch (error) { console.error(error); }
+    setLoading(false);
   };
 
   const buyItem = async (itemId: number, precio: number) => {
     if (!userId) {
-      addNotification({ id: "no-login", type: "info", message: "Inicia sesión para comprar" });
+      dispatch(addNotification({ id: "no-login", type: "info", message: "Inicia sesión para comprar" }));
       return;
     }
     if (puntos < precio) {
-      addNotification({ id: "no-points", type: "info", message: "Puntos insuficientes" });
+      dispatch(addNotification({ id: "no-points", type: "info", message: "Puntos insuficientes" }));
       return;
     }
-
     setBuying(itemId);
     try {
-      const res = await fetch("http://localhost:3000/tienda/comprar", {
+      const res = await fetch("http://localhost:3006/tienda/comprar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ usuario_id: userId, item_id: itemId }),
       });
-
       const data = await res.json();
       if (res.ok) {
-        updateUser({
+        const state = await import("../store").then(m => m.store.getState().gamification);
+        dispatch(updateUser({
           id: userId,
-          username: useGamificationStore.getState().username,
-          nivel: useGamificationStore.getState().nivel,
-          xp_actual: useGamificationStore.getState().xp,
-          racha_dias: useGamificationStore.getState().racha,
+          username: state.username,
+          nivel: state.nivel,
+          xp_actual: state.xp,
+          racha_dias: state.racha,
           puntos_tienda: data.puntos_restantes,
-        });
-
-        addNotification({
-          id: `buy-${Date.now()}`,
-          type: "puntos",
+        }));
+        dispatch(addNotification({
+          id: `buy-${Date.now()}`, type: "puntos",
           message: `¡Comprado: ${data.item.nombre}!`,
           value: `Te quedan ${data.puntos_restantes} puntos`,
-        });
+        }));
       } else {
-        addNotification({
-          id: `buy-fail-${Date.now()}`,
-          type: "info",
-          message: data.error || "Error al comprar",
-        });
+        dispatch(addNotification({ id: `buy-fail-${Date.now()}`, type: "info", message: data.error || "Error al comprar" }));
       }
     } catch (error) {
-      addNotification({ id: "buy-error", type: "info", message: "Error de conexión" });
-    } finally {
-      setBuying(null);
-    }
+      dispatch(addNotification({ id: "buy-error", type: "info", message: "Error de conexión" }));
+    } finally { setBuying(null); }
   };
 
   if (!userId) {
@@ -125,23 +108,15 @@ export const Shop = () => {
           {items.map((item) => {
             const canAfford = puntos >= item.precio;
             return (
-              <div
-                key={item.id}
-                className={`bg-zinc-800/40 border ${canAfford ? "border-zinc-700 hover:border-zinc-600" : "border-zinc-800/50 opacity-60"} rounded-lg p-6 transition-all duration-300`}
-              >
+              <div key={item.id}
+                className={`bg-zinc-800/40 border ${canAfford ? "border-zinc-700 hover:border-zinc-600" : "border-zinc-800/50 opacity-60"} rounded-lg p-6 transition-all duration-300`}>
                 <div className="text-4xl mb-4">{item.icono}</div>
                 <h3 className="text-lg font-bold text-white mb-1">{item.nombre}</h3>
                 <p className="text-sm text-gray-400 mb-4">{item.descripcion}</p>
                 <div className="flex items-center justify-between">
-                  <span className="text-yellow-400 font-bold flex items-center gap-1">
-                    <span>💎</span>
-                    {item.precio}
-                  </span>
-                  <button
-                    onClick={() => buyItem(item.id, item.precio)}
-                    disabled={buying === item.id || !canAfford}
-                    className={`px-4 py-2 rounded-full text-sm font-bold transition ${canAfford ? "bg-green-500 text-black hover:scale-105" : "bg-zinc-700 text-gray-500 cursor-not-allowed"} ${buying === item.id ? "opacity-50" : ""}`}
-                  >
+                  <span className="text-yellow-400 font-bold flex items-center gap-1"><span>💎</span>{item.precio}</span>
+                  <button onClick={() => buyItem(item.id, item.precio)} disabled={buying === item.id || !canAfford}
+                    className={`px-4 py-2 rounded-full text-sm font-bold transition ${canAfford ? "bg-green-500 text-black hover:scale-105" : "bg-zinc-700 text-gray-500 cursor-not-allowed"} ${buying === item.id ? "opacity-50" : ""}`}>
                     {buying === item.id ? "..." : canAfford ? "Comprar" : "Sin puntos"}
                   </button>
                 </div>
