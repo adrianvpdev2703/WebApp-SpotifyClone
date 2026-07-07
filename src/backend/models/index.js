@@ -11,6 +11,8 @@ const Usuario = require("./usuario")(sequelize);
 
 const Comunidad = require("./comunidad")(sequelize);
 const Mensaje = require("./mensaje")(sequelize);
+const TiendaItem = require("./tiendaitem")(sequelize);
+const UsuarioCompra = require("./usuariocompra")(sequelize);
 
 // Un Álbum pertenece a un Artista
 Album.belongsTo(Artista, { foreignKey: "artista", as: "artistaData" });
@@ -45,6 +47,15 @@ Mensaje.belongsTo(Usuario, { foreignKey: "usuario_id", as: "autor" });
 // 3. Una Comunidad tiene Muchos Mensajes (Uno a Muchos)
 Comunidad.hasMany(Mensaje, { foreignKey: "comunidad_id", as: "mensajes" });
 Mensaje.belongsTo(Comunidad, { foreignKey: "comunidad_id", as: "comunidad" });
+
+// 4. Usuario -> Compras
+Usuario.hasMany(UsuarioCompra, { foreignKey: "usuario_id", as: "compras" });
+UsuarioCompra.belongsTo(Usuario, { foreignKey: "usuario_id", as: "usuario" });
+
+// 5. TiendaItem -> Compras
+TiendaItem.hasMany(UsuarioCompra, { foreignKey: "item_id", as: "compras" });
+UsuarioCompra.belongsTo(TiendaItem, { foreignKey: "item_id", as: "item" });
+
 module.exports = {
   Cancion,
   Album,
@@ -54,6 +65,8 @@ module.exports = {
   Usuario,
   Comunidad,
   Mensaje,
+  TiendaItem,
+  UsuarioCompra,
   sequelize,
   Sequelize: sequelize.Sequelize,
 };

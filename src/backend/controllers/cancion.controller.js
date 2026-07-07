@@ -4,7 +4,16 @@ const path = require("path");
 
 //GET para las canciones
 exports.getAllCanciones = async (req, res) => {
-  const canciones = await db.Cancion.findAll();
+  const canciones = await db.Cancion.findAll({
+    include: [{
+      model: db.Album,
+      as: "albumData",
+      include: [{
+        model: db.Artista,
+        as: "artistaData",
+      }],
+    }],
+  });
   res.json(canciones);
 };
 

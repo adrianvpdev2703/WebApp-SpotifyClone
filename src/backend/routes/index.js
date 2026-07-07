@@ -8,4 +8,5 @@ module.exports = (app) => {
   require("./search.routes")(app);
   require("./usuario.routes")(app);
   require("./comunidad.routes")(app);
+  require("./tienda.routes")(app);
 };

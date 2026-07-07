@@ -40,9 +40,12 @@ const crearUsuario = async (req, res) => {
 
 const getOrCreateUsuario = async (req, res) => {
   try {
+    const { email } = req.body;
+    if (!email) return res.status(400).json({ error: "Email requerido" });
+
     const [usuario, created] = await Usuario.findOrCreate({
-      where: { email: "test@spotifyclone.com" },
-      defaults: { username: "AdrianTester" },
+      where: { email },
+      defaults: { username: email.split("@")[0] },
     });
 
     //carga en el estado grobal del redux
@@ -51,8 +54,8 @@ const getOrCreateUsuario = async (req, res) => {
         id: usuario.id,
         xpActual: usuario.xp_actual,
         nivel: usuario.nivel,
-        puntos: usuario.puntos_tienda || 0, // <- Agrega esto
-        racha: usuario.racha_dias || 0, // <- Agrega esto
+        puntos: usuario.puntos_tienda || 0,
+        racha: usuario.racha_dias || 0,
       }),
     );
 

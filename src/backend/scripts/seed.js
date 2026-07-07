@@ -5,6 +5,7 @@ const {
   Album,
   Cancion,
   ArtistaxGenero,
+  TiendaItem,
 } = require("../models");
 
 async function poblarBaseDeDatos() {
@@ -101,6 +102,15 @@ async function poblarBaseDeDatos() {
       archivo: "uploads/audio/Horror Business.mp3",
       album: albumHorrorBusiness.id,
     });
+
+    // ==========================
+    // TIENDA ITEMS
+    // ==========================
+    await TiendaItem.create({ nombre: "Cambiar color de usuario", descripcion: "Destaca con un nombre de usuario de color especial", precio: 50, tipo: "cosmetico", icono: "🎨" });
+    await TiendaItem.create({ nombre: "Insignia Legendaria", descripcion: "Una insignia exclusiva que muestra tu dedicación", precio: 100, tipo: "insignia", icono: "🏅" });
+    await TiendaItem.create({ nombre: "Multiplicador XP x2 (1 hora)", descripcion: "Gana el doble de XP durante 1 hora", precio: 200, tipo: "boost", icono: "⚡" });
+    await TiendaItem.create({ nombre: "Título personalizado", descripcion: "Elige un título único que aparecerá en tu perfil", precio: 150, tipo: "titulo", icono: "👑" });
+    await TiendaItem.create({ nombre: "Tema oscuro premium", descripcion: "Un tema oscuro aún más elegante para tu reproductor", precio: 75, tipo: "tema", icono: "🌙" });
 
     console.log("✅ ¡Base de datos poblada con éxito!");
     process.exit(0);
