@@ -4,10 +4,10 @@ import { removeNotification } from "../store/gamificationSlice";
 
 const typeStyles: Record<string, string> = {
   xp: "bg-gradient-to-r from-green-600 to-green-700 border-green-400",
-  levelup: "bg-gradient-to-r from-yellow-600 to-yellow-700 border-yellow-400",
-  combo: "bg-gradient-to-r from-orange-600 to-red-600 border-orange-400",
+  levelup: "bg-gradient-to-r from-yellow-500 to-amber-600 border-yellow-400",
+  combo: "bg-gradient-to-r from-orange-500 to-red-500 border-orange-400",
   racha: "bg-gradient-to-r from-orange-500 to-red-500 border-orange-300",
-  puntos: "bg-gradient-to-r from-yellow-500 to-amber-600 border-yellow-300",
+  puntos: "bg-gradient-to-r from-yellow-400 to-amber-500 border-yellow-300",
   info: "bg-gradient-to-r from-blue-600 to-blue-700 border-blue-400",
 };
 
@@ -40,8 +40,8 @@ const ToastItem = ({ notif, onClose }: { notif: { id: string; type: string; mess
   }, [onClose]);
 
   return (
-    <div className={`${typeStyles[notif.type] || typeStyles.info} border rounded-lg px-4 py-3 text-white shadow-xl animate-slide-in flex items-center gap-3`}>
-      <span className="text-xl">{typeIcons[notif.type] || "ℹ"}</span>
+    <div className={`${typeStyles[notif.type] || typeStyles.info} border rounded-xl px-4 py-3 text-white shadow-2xl animate-slide-in flex items-center gap-3 backdrop-blur-sm`}>
+      <span className="text-xl animate-bounce">{typeIcons[notif.type] || "ℹ"}</span>
       <div className="flex-1">
         <p className="text-sm font-semibold">{notif.message}</p>
         {notif.value && <p className="text-xs opacity-80">{notif.value}</p>}

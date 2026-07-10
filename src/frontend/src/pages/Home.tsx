@@ -78,16 +78,16 @@ export const Home = () => {
   };
 
   return (
-    <div>
+    <div className="animate-fade-in">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-4xl font-bold">Buenas tardes</h1>
+          <h1 className="text-4xl font-bold gradient-text">Buenas tardes</h1>
           <p className="text-gray-400 mt-1">Descubre nuevas canciones</p>
         </div>
         {userId && canciones.length > 0 && (
           <button
             onClick={playAllShuffled}
-            className="bg-green-500/20 text-green-400 px-4 py-2 rounded-full text-sm font-bold border border-green-500/30 hover:bg-green-500/30 transition flex items-center gap-2"
+            className="glass-strong px-4 py-2 rounded-full text-sm font-bold border border-zinc-700/50 hover:border-green-500/30 transition-all duration-300 flex items-center gap-2 hover:scale-105"
           >
             <span>🔀</span>
             Reproducir aleatorio
@@ -98,10 +98,10 @@ export const Home = () => {
       {loading ? (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
           {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="bg-zinc-800/50 rounded-lg p-4 animate-pulse">
-              <div className="aspect-square bg-zinc-700 rounded-lg mb-4" />
-              <div className="h-4 bg-zinc-700 rounded w-3/4 mb-2" />
-              <div className="h-3 bg-zinc-700 rounded w-1/2" />
+            <div key={i} className="glass rounded-xl p-4 animate-pulse">
+              <div className="aspect-square bg-zinc-700/50 rounded-lg mb-4" />
+              <div className="h-4 bg-zinc-700/50 rounded w-3/4 mb-2" />
+              <div className="h-3 bg-zinc-700/50 rounded w-1/2" />
             </div>
           ))}
         </div>
@@ -109,61 +109,63 @@ export const Home = () => {
         <>
           {/* Álbumes destacados */}
           {!selectedAlbum && (
-            <section className="mb-10">
-              <h2 className="text-2xl font-bold mb-4">Álbumes destacados</h2>
+            <section className="mb-10 animate-slide-up">
+              <h2 className="text-2xl font-bold mb-4 gradient-text">Álbumes destacados</h2>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                {albumes.map((album) => {
-                  const albumArt = album.imagen;
-                  return (
-                    <div
-                      key={album.id}
-                      onClick={() => playAlbumSongs(album)}
-                      className="group bg-zinc-800/40 hover:bg-zinc-700/40 p-4 rounded-lg cursor-pointer transition-all duration-300 border border-transparent hover:border-zinc-700"
-                    >
-                      <div className="relative mb-4">
-                        <div className="aspect-square rounded-lg overflow-hidden shadow-lg">
-                          {albumArt ? (
-                            <img src={`http://localhost:3006/${albumArt}`} alt={album.nombre} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                          ) : (
-                            <div className="w-full h-full bg-gradient-to-br from-green-600 to-zinc-800 flex items-center justify-center">
-                              <span className="text-5xl">💿</span>
-                            </div>
-                          )}
-                        </div>
-                        <div className="absolute bottom-2 right-2 w-10 h-10 bg-green-500 rounded-full flex items-center justify-center shadow-xl opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-                          <span className="text-black text-lg ml-0.5">▶</span>
-                        </div>
+                {albumes.map((album, index) => (
+                  <div
+                    key={album.id}
+                    onClick={() => playAlbumSongs(album)}
+                    className="group glass card-hover rounded-xl p-4 cursor-pointer animate-slide-up"
+                    style={{ animationDelay: `${index * 50}ms` }}
+                  >
+                    <div className="relative mb-4">
+                      <div className="aspect-square rounded-lg overflow-hidden shadow-xl">
+                        {album.imagen ? (
+                          <img src={`http://localhost:3006/${album.imagen}`} alt={album.nombre} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-green-600 to-zinc-800 flex items-center justify-center">
+                            <span className="text-5xl">💿</span>
+                          </div>
+                        )}
                       </div>
-                      <h3 className="font-bold text-white truncate">{album.nombre}</h3>
-                      <p className="text-xs text-gray-400 mt-1">{album.canciones?.length || 0} canciones</p>
+                      <div className="absolute bottom-2 right-2 w-12 h-12 bg-green-500 rounded-full flex items-center justify-center shadow-xl opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 hover:scale-105">
+                        <span className="text-black text-lg ml-0.5">▶</span>
+                      </div>
                     </div>
-                  );
-                })}
+                    <h3 className="font-bold text-white truncate">{album.nombre}</h3>
+                    <p className="text-xs text-gray-400 mt-1">{album.canciones?.length || 0} canciones</p>
+                  </div>
+                ))}
               </div>
             </section>
           )}
 
           {/* Vista de canciones del álbum seleccionado */}
           {selectedAlbum && selectedAlbum.canciones && (
-            <section className="mb-10">
+            <section className="mb-10 animate-slide-up">
               <div className="flex items-center gap-4 mb-6">
                 <button onClick={() => setSelectedAlbum(null)} className="text-gray-400 hover:text-white transition text-lg">←</button>
-                <h2 className="text-2xl font-bold">{selectedAlbum.nombre}</h2>
+                <h2 className="text-2xl font-bold gradient-text">{selectedAlbum.nombre}</h2>
                 <button
                   onClick={() => playAlbumSongs(selectedAlbum!)}
-                  className="bg-green-500 text-black px-4 py-1.5 rounded-full text-sm font-bold hover:scale-105 transition"
+                  className="btn-primary text-sm"
                 >
                   Reproducir álbum
                 </button>
               </div>
-              <div className="space-y-1">
+              <div className="space-y-1 glass-strong rounded-xl p-2">
                 {selectedAlbum.canciones.map((song, idx) => {
                   const isActive = currentSong?.id === song.id;
                   return (
                     <div
                       key={song.id}
                       onClick={() => playSong(song)}
-                      className={`flex items-center gap-4 p-3 rounded-lg cursor-pointer transition group ${isActive ? "bg-green-500/10 border border-green-500/30" : "hover:bg-zinc-800/50"}`}
+                      className={`flex items-center gap-4 p-3 rounded-lg cursor-pointer transition-all duration-300 group ${
+                        isActive
+                          ? "bg-green-500/10 border border-green-500/30"
+                          : "hover:bg-zinc-800/50"
+                      }`}
                     >
                       <span className="text-gray-500 w-6 text-center text-sm">{idx + 1}</span>
                       <div className="w-10 h-10 rounded overflow-hidden flex-shrink-0">
@@ -187,10 +189,10 @@ export const Home = () => {
 
           {/* Todas las canciones */}
           {!selectedAlbum && (
-            <section>
-              <h2 className="text-2xl font-bold mb-4">Todas las canciones</h2>
+            <section className="animate-slide-up">
+              <h2 className="text-2xl font-bold mb-4 gradient-text">Todas las canciones</h2>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                {canciones.map((cancion) => {
+                {canciones.map((cancion, index) => {
                   const isActive = currentSong?.id === cancion.id;
                   const albumArt = cancion.imagen || cancion.albumData?.imagen;
                   const artista = cancion.albumData?.artistaData?.nombre || "Artista desconocido";
@@ -198,10 +200,11 @@ export const Home = () => {
                     <div
                       key={cancion.id}
                       onClick={() => playSong(cancion)}
-                      className={`group bg-zinc-800/40 hover:bg-zinc-700/40 p-4 rounded-lg cursor-pointer transition-all duration-300 border ${isActive ? "border-green-500/50 bg-zinc-700/60" : "border-transparent hover:border-zinc-700"}`}
+                      className={`group glass card-hover rounded-xl p-4 cursor-pointer animate-slide-up ${isActive ? "border-green-500/50 bg-zinc-700/60" : "border-transparent hover:border-zinc-700"}`}
+                      style={{ animationDelay: `${index * 30}ms` }}
                     >
                       <div className="relative mb-4">
-                        <div className="aspect-square rounded-lg overflow-hidden shadow-lg">
+                        <div className="aspect-square rounded-lg overflow-hidden shadow-xl">
                           {albumArt ? (
                             <img src={`http://localhost:3006/${albumArt}`} alt={cancion.nombre} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                           ) : (

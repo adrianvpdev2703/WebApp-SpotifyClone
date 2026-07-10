@@ -133,12 +133,16 @@ const registrarCancionEscuchada = async (req, res) => {
       { where: { id: id } },
     );
 
+    const usuarioDbActualizado = await Usuario.findByPk(id);
+
     res.json({
       mensaje: estadoActualizado.subioNivel
         ? "¡Subiste de nivel y ganaste puntos!"
         : "Canción registrada",
       xpGanada: estadoActualizado.ultimaXpGanada,
       usuario: {
+        id: usuarioDbActualizado.id,
+        username: usuarioDbActualizado.username,
         nivel: estadoActualizado.nivel,
         xp_actual: estadoActualizado.xpActual,
         racha: estadoActualizado.racha,

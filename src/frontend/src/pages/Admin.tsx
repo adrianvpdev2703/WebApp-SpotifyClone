@@ -12,8 +12,8 @@ export const Admin = () => {
   const userId = useAppSelector((s) => s.gamification.id);
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold mb-6">Panel de Administración</h1>
+    <div className="animate-fade-in">
+      <h1 className="text-3xl font-bold gradient-text mb-6">Panel de Administración</h1>
       {!userId ? (
         <p className="text-gray-400">Inicia sesión para administrar contenido</p>
       ) : (
@@ -21,7 +21,7 @@ export const Admin = () => {
           <div className="flex gap-2 mb-6">
             {(["artistas", "albumes", "canciones"] as Tab[]).map((t) => (
               <button key={t} onClick={() => setTab(t)}
-                className={`px-4 py-2 rounded-full font-bold text-sm transition ${tab === t ? "bg-green-500 text-black" : "bg-zinc-800 text-gray-400 hover:bg-zinc-700"}`}>
+                className={`px-4 py-2 rounded-full font-bold text-sm transition-all duration-200 ${tab === t ? "btn-primary" : "btn-secondary"}`}>
                 {t.charAt(0).toUpperCase() + t.slice(1)}
               </button>
             ))}
@@ -55,18 +55,18 @@ const ArtistManager = () => {
     fetchArtists();
   };
   return (
-    <div>
+    <div className="animate-fade-in">
       <form onSubmit={handleCreate} className="flex gap-2 mb-6">
         <input type="text" placeholder="Nombre del artista" value={nombre}
           onChange={(e) => setNombre(e.target.value)}
-          className="flex-1 p-3 rounded bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:border-green-500" required />
-        <button type="submit" className="bg-green-500 text-black px-6 py-3 rounded-full font-bold hover:scale-105 transition">Agregar</button>
+          className="input-base flex-1" required />
+        <button type="submit" className="btn-primary">Agregar</button>
       </form>
       <div className="space-y-2">
         {artists.map((a) => (
-          <div key={a.id} className="flex items-center justify-between bg-zinc-800/40 p-3 rounded-lg border border-zinc-800">
+          <div key={a.id} className="flex items-center justify-between glass card-hover p-3 rounded-xl border border-zinc-800">
             <span className="font-bold">{a.nombre}</span>
-            <button onClick={() => handleDelete(a.id)} className="text-red-500 hover:text-red-400 text-sm">Eliminar</button>
+            <button onClick={() => handleDelete(a.id)} className="text-red-500 hover:text-red-400 text-sm px-3 py-1 rounded-full hover:bg-red-500/10 transition">Eliminar</button>
           </div>
         ))}
       </div>
@@ -101,23 +101,23 @@ const AlbumManager = () => {
     fetchData();
   };
   return (
-    <div>
+    <div className="animate-fade-in">
       <form onSubmit={handleCreate} className="flex gap-2 mb-6 flex-wrap">
         <input type="text" placeholder="Nombre del álbum" value={nombre}
           onChange={(e) => setNombre(e.target.value)}
-          className="flex-1 min-w-[200px] p-3 rounded bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:border-green-500" required />
+          className="input-base flex-1 min-w-[200px]" required />
         <select value={artista} onChange={(e) => setArtista(e.target.value)}
-          className="p-3 rounded bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:border-green-500" required>
+          className="input-base" required>
           <option value="">Seleccionar artista</option>
           {artists.map((a) => <option key={a.id} value={a.id}>{a.nombre}</option>)}
         </select>
-        <button type="submit" className="bg-green-500 text-black px-6 py-3 rounded-full font-bold hover:scale-105 transition">Agregar</button>
+        <button type="submit" className="btn-primary">Agregar</button>
       </form>
       <div className="space-y-2">
         {albums.map((al) => (
-          <div key={al.id} className="flex items-center justify-between bg-zinc-800/40 p-3 rounded-lg border border-zinc-800">
+          <div key={al.id} className="flex items-center justify-between glass card-hover p-3 rounded-xl border border-zinc-800">
             <span className="font-bold">{al.nombre}</span>
-            <button onClick={() => handleDelete(al.id)} className="text-red-500 hover:text-red-400 text-sm">Eliminar</button>
+            <button onClick={() => handleDelete(al.id)} className="text-red-500 hover:text-red-400 text-sm px-3 py-1 rounded-full hover:bg-red-500/10 transition">Eliminar</button>
           </div>
         ))}
       </div>
@@ -159,30 +159,30 @@ const SongManager = () => {
   };
 
   return (
-    <div>
+    <div className="animate-fade-in">
       <form onSubmit={handleCreate} className="flex flex-col gap-3 mb-6">
         <div className="flex gap-2 flex-wrap">
           <input type="text" placeholder="Nombre de la canción" value={nombre}
             onChange={(e) => setNombre(e.target.value)}
-            className="flex-1 min-w-[200px] p-3 rounded bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:border-green-500" required />
+            className="input-base flex-1 min-w-[200px]" required />
           <select value={album} onChange={(e) => setAlbum(e.target.value)}
-            className="p-3 rounded bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:border-green-500" required>
+            className="input-base" required>
             <option value="">Seleccionar álbum</option>
             {albums.map((a) => <option key={a.id} value={a.id}>{a.nombre}</option>)}
           </select>
         </div>
         <div className="flex gap-2 items-center">
           <input ref={fileRef} type="file" accept="audio/*" onChange={(e) => setArchivo(e.target.files?.[0] || null)}
-            className="text-sm text-gray-400 file:mr-3 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-zinc-800 file:text-white file:font-bold hover:file:bg-zinc-700" />
-          <button type="submit" className="bg-green-500 text-black px-6 py-3 rounded-full font-bold hover:scale-105 transition">Agregar</button>
+            className="text-sm text-gray-400 file:mr-3 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-zinc-800 file:text-white file:font-bold hover:file:bg-zinc-700 transition" />
+          <button type="submit" className="btn-primary">Agregar</button>
         </div>
       </form>
       <div className="space-y-2">
         {songs.map((s) => (
-          <div key={s.id} className="flex items-center justify-between bg-zinc-800/40 p-3 rounded-lg border border-zinc-800">
+          <div key={s.id} className="flex items-center justify-between glass card-hover p-3 rounded-xl border border-zinc-800">
             <span className="font-bold">{s.nombre}</span>
             <span className="text-xs text-gray-500">{s.archivo ? "📁 audio" : "❌ sin audio"}</span>
-            <button onClick={() => handleDelete(s.id)} className="text-red-500 hover:text-red-400 text-sm">Eliminar</button>
+            <button onClick={() => handleDelete(s.id)} className="text-red-500 hover:text-red-400 text-sm px-3 py-1 rounded-full hover:bg-red-500/10 transition">Eliminar</button>
           </div>
         ))}
       </div>

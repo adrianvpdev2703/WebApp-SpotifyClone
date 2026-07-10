@@ -19,140 +19,130 @@ async function poblarBaseDeDatos() {
     const electronica = await Genero.create({ nombre: "Electrónica" });
     const pop = await Genero.create({ nombre: "Pop" });
     const alternativo = await Genero.create({ nombre: "Alternativo" });
+    const corridos = await Genero.create({ nombre: "Corridos Tumbados" });
+    const eurodance = await Genero.create({ nombre: "Eurodance" });
+    const cloudRap = await Genero.create({ nombre: "Cloud Rap" });
+    const horrorPunk = await Genero.create({ nombre: "Horror Punk" });
 
     // ==========================
-    // ARTISTAS
+    // ARTISTAS (usando imágenes reales de uploads/images)
     // ==========================
-    const imgYung = "uploads/images/artworks-wXaB3xVGEq3yz8ey-6eHtAw-t500x500.jpg";
-    const imgMisfits = "uploads/images/Misfits_-_Horror_Business_cover.jpg";
-    const imgMetal = "uploads/images/ab67616d0000b27381e0d9617e70d75e7ae11fa6.jpg";
-    const imgSlipknot = "uploads/images/ab67616d0000b27339a6368dd1efeaea760d1d46.jpg";
-    const imgLorem = "uploads/images/lorem-ipsum-sample-text-lettering-comic-design-for-t-shirt-or-poster-R26AMG.jpg";
-    const imgGeneric = "uploads/images/WhatsApp Image 2026-07-01 at 01.37.04.jpeg";
+    const imgCaramell = "uploads/images/caramelldansen.jpg";
+    const imgJuniorH = "uploads/images/juniorH-mientrasDuermes.jpg";
+    const imgLorem = "uploads/images/lorem-ipsum.jpg";
+    const imgMetallica = "uploads/images/metallica_blackAlbum.jpeg";
+    const imgMisfits = "uploads/images/misfits_horrro_bussines.jpg";
+    const imgSlipknot = "uploads/images/slipknot_album_1.jpg";
+    const imgYungLean = "uploads/images/Yung Lean.jpg";
 
-    const yungLean = await Artista.create({ nombre: "Yung Lean", imagen: imgYung });
+    const caramell = await Artista.create({ nombre: "Caramell", imagen: imgCaramell });
+    const juniorH = await Artista.create({ nombre: "Junior H", imagen: imgJuniorH });
     const misfits = await Artista.create({ nombre: "Misfits", imagen: imgMisfits });
-    const metallica = await Artista.create({ nombre: "Metallica", imagen: imgMetal });
+    const metallica = await Artista.create({ nombre: "Metallica", imagen: imgMetallica });
     const slipknot = await Artista.create({ nombre: "Slipknot", imagen: imgSlipknot });
-    const nirvana = await Artista.create({ nombre: "Nirvana", imagen: imgLorem });
-    const radiohead = await Artista.create({ nombre: "Radiohead", imagen: imgGeneric });
-    const daftPunk = await Artista.create({ nombre: "Daft Punk", imagen: imgYung });
+    const yungLean = await Artista.create({ nombre: "Yung Lean", imagen: imgYungLean });
+    const artistaGenerico = await Artista.create({ nombre: "Varios Artistas", imagen: imgLorem });
 
-    await ArtistaxGenero.create({ artista: yungLean.id, genero: hiphop.id });
-    await ArtistaxGenero.create({ artista: yungLean.id, genero: indie.id });
+    await ArtistaxGenero.create({ artista: caramell.id, genero: eurodance.id });
+    await ArtistaxGenero.create({ artista: caramell.id, genero: pop.id });
+    await ArtistaxGenero.create({ artista: juniorH.id, genero: corridos.id });
+    await ArtistaxGenero.create({ artista: juniorH.id, genero: hiphop.id });
+    await ArtistaxGenero.create({ artista: misfits.id, genero: horrorPunk.id });
     await ArtistaxGenero.create({ artista: misfits.id, genero: punk.id });
     await ArtistaxGenero.create({ artista: misfits.id, genero: rock.id });
     await ArtistaxGenero.create({ artista: metallica.id, genero: metal.id });
     await ArtistaxGenero.create({ artista: metallica.id, genero: rock.id });
     await ArtistaxGenero.create({ artista: slipknot.id, genero: metal.id });
-    await ArtistaxGenero.create({ artista: nirvana.id, genero: rock.id });
-    await ArtistaxGenero.create({ artista: nirvana.id, genero: alternativo.id });
-    await ArtistaxGenero.create({ artista: radiohead.id, genero: alternativo.id });
-    await ArtistaxGenero.create({ artista: radiohead.id, genero: rock.id });
-    await ArtistaxGenero.create({ artista: daftPunk.id, genero: electronica.id });
-    await ArtistaxGenero.create({ artista: daftPunk.id, genero: pop.id });
+    await ArtistaxGenero.create({ artista: slipknot.id, genero: alternativo.id });
+    await ArtistaxGenero.create({ artista: yungLean.id, genero: cloudRap.id });
+    await ArtistaxGenero.create({ artista: yungLean.id, genero: hiphop.id });
+    await ArtistaxGenero.create({ artista: yungLean.id, genero: indie.id });
+    await ArtistaxGenero.create({ artista: artistaGenerico.id, genero: pop.id });
+    await ArtistaxGenero.create({ artista: artistaGenerico.id, genero: rock.id });
 
     // ==========================
-    // ÁLBUMES Y CANCIONES
+    // ÁLBUMES Y CANCIONES (usando solo audio de 10 segundos)
     // ==========================
-    const audioAgony = "uploads/audio/Yung Lean - 'Agony'.mp3";
-    const audioRedSky = "uploads/audio/Yung Lean - Red Bottom Sky.mp3";
-    const audioHorror = "uploads/audio/Horror Business.mp3";
-    const audioLofi = "uploads/audio/5 MINUTES OF (No Copyright Music) CHILL LOFI HIP HOP BEAT (Royalty free).mp3";
-    const audioDormir = "uploads/audio/MIENTRAS DUERMES.mp3";
+    const audio10s = "uploads/audio/10 Seconds Timer with Music.mp3";
 
-    // --- YUNG LEAN - Stranger ---
-    const albumStranger = await Album.create({ nombre: "Stranger", imagen: imgYung, artista: yungLean.id });
-    await Cancion.create({ nombre: "Agony", archivo: audioAgony, album: albumStranger.id });
-    await Cancion.create({ nombre: "Red Bottom Sky", archivo: audioRedSky, album: albumStranger.id });
-    await Cancion.create({ nombre: "Miami Ultras", archivo: audioLofi, album: albumStranger.id });
-    await Cancion.create({ nombre: "Hurt", archivo: audioDormir, album: albumStranger.id });
+    // --- CARAMMELL ---
+    const albumCaramell = await Album.create({ nombre: "Supergott", imagen: imgCaramell, artista: caramell.id });
+    await Cancion.create({ nombre: "Caramelldansen", archivo: audio10s, album: albumCaramell.id, imagen: imgCaramell });
+    await Cancion.create({ nombre: "Bumble Bee", archivo: audio10s, album: albumCaramell.id, imagen: imgCaramell });
+    await Cancion.create({ nombre: "U-UA-UA", archivo: audio10s, album: albumCaramell.id, imagen: imgCaramell });
+    await Cancion.create({ nombre: "Allra Bästa Vänner", archivo: audio10s, album: albumCaramell.id, imagen: imgCaramell });
+    await Cancion.create({ nombre: "Boys", archivo: audio10s, album: albumCaramell.id, imagen: imgCaramell });
 
-    // --- YUNG LEAN - Unknown Death 2002 ---
-    const albumDeath = await Album.create({ nombre: "Unknown Death 2002", imagen: imgGeneric, artista: yungLean.id });
-    await Cancion.create({ nombre: "Ginseng Strip 2002", archivo: audioLofi, album: albumDeath.id });
-    await Cancion.create({ nombre: "Kyoto", archivo: audioDormir, album: albumDeath.id });
-    await Cancion.create({ nombre: "Yoshi City", archivo: audioAgony, album: albumDeath.id });
+    // --- JUNIOR H ---
+    const albumJuniorH = await Album.create({ nombre: "$ad Boyz 4 Life", imagen: imgJuniorH, artista: juniorH.id });
+    await Cancion.create({ nombre: "Mientras Duermes", archivo: audio10s, album: albumJuniorH.id, imagen: imgJuniorH });
+    await Cancion.create({ nombre: "El Azul", archivo: audio10s, album: albumJuniorH.id, imagen: imgJuniorH });
+    await Cancion.create({ nombre: "Lady Gaga", archivo: audio10s, album: albumJuniorH.id, imagen: imgJuniorH });
+    await Cancion.create({ nombre: "Mente Positiva", archivo: audio10s, album: albumJuniorH.id, imagen: imgJuniorH });
+    await Cancion.create({ nombre: "Disfruto lo Malo", archivo: audio10s, album: albumJuniorH.id, imagen: imgJuniorH });
 
-    // --- MISFITS - Horror Business ---
-    const albumHorror = await Album.create({ nombre: "Horror Business", imagen: imgMisfits, artista: misfits.id });
-    await Cancion.create({ nombre: "Horror Business", archivo: audioHorror, album: albumHorror.id });
-    await Cancion.create({ nombre: "Teenagers from Mars", archivo: audioLofi, album: albumHorror.id });
-    await Cancion.create({ nombre: "Night of the Living Dead", archivo: audioDormir, album: albumHorror.id });
-    await Cancion.create({ nombre: "Where Eagles Dare", archivo: audioAgony, album: albumHorror.id });
+    // --- MISFITS ---
+    const albumMisfits1 = await Album.create({ nombre: "Horror Business", imagen: imgMisfits, artista: misfits.id });
+    await Cancion.create({ nombre: "Horror Business", archivo: audio10s, album: albumMisfits1.id, imagen: imgMisfits });
+    await Cancion.create({ nombre: "Teenagers from Mars", archivo: audio10s, album: albumMisfits1.id, imagen: imgMisfits });
+    await Cancion.create({ nombre: "Night of the Living Dead", archivo: audio10s, album: albumMisfits1.id, imagen: imgMisfits });
+    await Cancion.create({ nombre: "Where Eagles Dare", archivo: audio10s, album: albumMisfits1.id, imagen: imgMisfits });
 
-    // --- MISFITS - Walk Among Us ---
-    const albumWalk = await Album.create({ nombre: "Walk Among Us", imagen: imgLorem, artista: misfits.id });
-    await Cancion.create({ nombre: "I Turned Into a Martian", archivo: audioHorror, album: albumWalk.id });
-    await Cancion.create({ nombre: "Skulls", archivo: audioLofi, album: albumWalk.id });
-    await Cancion.create({ nombre: "Astro Zombies", archivo: audioDormir, album: albumWalk.id });
+    const albumMisfits2 = await Album.create({ nombre: "Walk Among Us", imagen: imgLorem, artista: misfits.id });
+    await Cancion.create({ nombre: "20 Eyes", archivo: audio10s, album: albumMisfits2.id, imagen: imgLorem });
+    await Cancion.create({ nombre: "I Turned Into a Martian", archivo: audio10s, album: albumMisfits2.id, imagen: imgLorem });
+    await Cancion.create({ nombre: "Skulls", archivo: audio10s, album: albumMisfits2.id, imagen: imgLorem });
+    await Cancion.create({ nombre: "Astro Zombies", archivo: audio10s, album: albumMisfits2.id, imagen: imgLorem });
+    await Cancion.create({ nombre: "Mommy, Can I Go Out & Kill Tonight?", archivo: audio10s, album: albumMisfits2.id, imagen: imgLorem });
 
-    // --- METALLICA - Black Album ---
-    const albumBlack = await Album.create({ nombre: "Metallica (Black Album)", imagen: imgMetal, artista: metallica.id });
-    await Cancion.create({ nombre: "Enter Sandman", archivo: audioLofi, album: albumBlack.id });
-    await Cancion.create({ nombre: "Sad But True", archivo: audioDormir, album: albumBlack.id });
-    await Cancion.create({ nombre: "The Unforgiven", archivo: audioHorror, album: albumBlack.id });
-    await Cancion.create({ nombre: "Wherever I May Roam", archivo: audioAgony, album: albumBlack.id });
-    await Cancion.create({ nombre: "Nothing Else Matters", archivo: audioRedSky, album: albumBlack.id });
+    // --- METALLICA ---
+    const albumMetallica1 = await Album.create({ nombre: "Metallica (Black Album)", imagen: imgMetallica, artista: metallica.id });
+    await Cancion.create({ nombre: "Enter Sandman", archivo: audio10s, album: albumMetallica1.id, imagen: imgMetallica });
+    await Cancion.create({ nombre: "Sad But True", archivo: audio10s, album: albumMetallica1.id, imagen: imgMetallica });
+    await Cancion.create({ nombre: "The Unforgiven", archivo: audio10s, album: albumMetallica1.id, imagen: imgMetallica });
+    await Cancion.create({ nombre: "Wherever I May Roam", archivo: audio10s, album: albumMetallica1.id, imagen: imgMetallica });
+    await Cancion.create({ nombre: "Nothing Else Matters", archivo: audio10s, album: albumMetallica1.id, imagen: imgMetallica });
 
-    // --- METALLICA - Master of Puppets ---
-    const albumMaster = await Album.create({ nombre: "Master of Puppets", imagen: imgGeneric, artista: metallica.id });
-    await Cancion.create({ nombre: "Battery", archivo: audioLofi, album: albumMaster.id });
-    await Cancion.create({ nombre: "Master of Puppets", archivo: audioHorror, album: albumMaster.id });
-    await Cancion.create({ nombre: "Welcome Home (Sanitarium)", archivo: audioDormir, album: albumMaster.id });
-    await Cancion.create({ nombre: "Orion", archivo: audioAgony, album: albumMaster.id });
+    const albumMetallica2 = await Album.create({ nombre: "Master of Puppets", imagen: imgLorem, artista: metallica.id });
+    await Cancion.create({ nombre: "Battery", archivo: audio10s, album: albumMetallica2.id, imagen: imgLorem });
+    await Cancion.create({ nombre: "Master of Puppets", archivo: audio10s, album: albumMetallica2.id, imagen: imgLorem });
+    await Cancion.create({ nombre: "Welcome Home (Sanitarium)", archivo: audio10s, album: albumMetallica2.id, imagen: imgLorem });
+    await Cancion.create({ nombre: "Orion", archivo: audio10s, album: albumMetallica2.id, imagen: imgLorem });
 
-    // --- SLIPKNOT - Iowa ---
-    const albumIowa = await Album.create({ nombre: "Iowa", imagen: imgSlipknot, artista: slipknot.id });
-    await Cancion.create({ nombre: "People = Shit", archivo: audioHorror, album: albumIowa.id });
-    await Cancion.create({ nombre: "Left Behind", archivo: audioLofi, album: albumIowa.id });
-    await Cancion.create({ nombre: "My Plague", archivo: audioDormir, album: albumIowa.id });
-    await Cancion.create({ nombre: "The Heretic Anthem", archivo: audioAgony, album: albumIowa.id });
+    // --- SLIPKNOT ---
+    const albumSlipknot1 = await Album.create({ nombre: "Iowa", imagen: imgSlipknot, artista: slipknot.id });
+    await Cancion.create({ nombre: "People = Shit", archivo: audio10s, album: albumSlipknot1.id, imagen: imgSlipknot });
+    await Cancion.create({ nombre: "Left Behind", archivo: audio10s, album: albumSlipknot1.id, imagen: imgSlipknot });
+    await Cancion.create({ nombre: "My Plague", archivo: audio10s, album: albumSlipknot1.id, imagen: imgSlipknot });
+    await Cancion.create({ nombre: "The Heretic Anthem", archivo: audio10s, album: albumSlipknot1.id, imagen: imgSlipknot });
+    await Cancion.create({ nombre: "Disasterpiece", archivo: audio10s, album: albumSlipknot1.id, imagen: imgSlipknot });
 
-    // --- SLIPKNOT - Vol. 3 ---
-    const albumVol3 = await Album.create({ nombre: "Vol. 3: The Subliminal Verses", imagen: imgLorem, artista: slipknot.id });
-    await Cancion.create({ nombre: "Before I Forget", archivo: audioLofi, album: albumVol3.id });
-    await Cancion.create({ nombre: "Duality", archivo: audioHorror, album: albumVol3.id });
-    await Cancion.create({ nombre: "Vermilion", archivo: audioDormir, album: albumVol3.id });
+    const albumSlipknot2 = await Album.create({ nombre: "Vol. 3: The Subliminal Verses", imagen: imgLorem, artista: slipknot.id });
+    await Cancion.create({ nombre: "Duality", archivo: audio10s, album: albumSlipknot2.id, imagen: imgLorem });
+    await Cancion.create({ nombre: "Before I Forget", archivo: audio10s, album: albumSlipknot2.id, imagen: imgLorem });
+    await Cancion.create({ nombre: "Vermilion", archivo: audio10s, album: albumSlipknot2.id, imagen: imgLorem });
+    await Cancion.create({ nombre: "Psychosocial", archivo: audio10s, album: albumSlipknot2.id, imagen: imgLorem });
 
-    // --- NIRVANA - Nevermind ---
-    const albumNevermind = await Album.create({ nombre: "Nevermind", imagen: imgLorem, artista: nirvana.id });
-    await Cancion.create({ nombre: "Smells Like Teen Spirit", archivo: audioHorror, album: albumNevermind.id });
-    await Cancion.create({ nombre: "Come As You Are", archivo: audioLofi, album: albumNevermind.id });
-    await Cancion.create({ nombre: "Lithium", archivo: audioDormir, album: albumNevermind.id });
-    await Cancion.create({ nombre: "In Bloom", archivo: audioAgony, album: albumNevermind.id });
+    // --- YUNG LEAN ---
+    const albumYung1 = await Album.create({ nombre: "Stranger", imagen: imgYungLean, artista: yungLean.id });
+    await Cancion.create({ nombre: "Agony", archivo: audio10s, album: albumYung1.id, imagen: imgYungLean });
+    await Cancion.create({ nombre: "Red Bottom Sky", archivo: audio10s, album: albumYung1.id, imagen: imgYungLean });
+    await Cancion.create({ nombre: "Miami Ultras", archivo: audio10s, album: albumYung1.id, imagen: imgYungLean });
+    await Cancion.create({ nombre: "Hurt", archivo: audio10s, album: albumYung1.id, imagen: imgYungLean });
 
-    // --- NIRVANA - In Utero ---
-    const albumUtero = await Album.create({ nombre: "In Utero", imagen: imgGeneric, artista: nirvana.id });
-    await Cancion.create({ nombre: "Heart-Shaped Box", archivo: audioRedSky, album: albumUtero.id });
-    await Cancion.create({ nombre: "Rape Me", archivo: audioLofi, album: albumUtero.id });
-    await Cancion.create({ nombre: "All Apologies", archivo: audioDormir, album: albumUtero.id });
+    const albumYung2 = await Album.create({ nombre: "Unknown Death 2002", imagen: imgLorem, artista: yungLean.id });
+    await Cancion.create({ nombre: "Ginseng Strip 2002", archivo: audio10s, album: albumYung2.id, imagen: imgLorem });
+    await Cancion.create({ nombre: "Kyoto", archivo: audio10s, album: albumYung2.id, imagen: imgLorem });
+    await Cancion.create({ nombre: "Yoshi City", archivo: audio10s, album: albumYung2.id, imagen: imgLorem });
+    await Cancion.create({ nombre: "Oreomilkshake", archivo: audio10s, album: albumYung2.id, imagen: imgLorem });
 
-    // --- RADIOHEAD - OK Computer ---
-    const albumOK = await Album.create({ nombre: "OK Computer", imagen: imgGeneric, artista: radiohead.id });
-    await Cancion.create({ nombre: "Paranoid Android", archivo: audioLofi, album: albumOK.id });
-    await Cancion.create({ nombre: "Karma Police", archivo: audioDormir, album: albumOK.id });
-    await Cancion.create({ nombre: "No Surprises", archivo: audioAgony, album: albumOK.id });
-    await Cancion.create({ nombre: "Exit Music (For a Film)", archivo: audioHorror, album: albumOK.id });
-
-    // --- RADIOHEAD - Kid A ---
-    const albumKidA = await Album.create({ nombre: "Kid A", imagen: imgLorem, artista: radiohead.id });
-    await Cancion.create({ nombre: "Everything In Its Right Place", archivo: audioDormir, album: albumKidA.id });
-    await Cancion.create({ nombre: "Idioteque", archivo: audioLofi, album: albumKidA.id });
-    await Cancion.create({ nombre: "How to Disappear Completely", archivo: audioAgony, album: albumKidA.id });
-
-    // --- DAFT PUNK - Discovery ---
-    const albumDiscovery = await Album.create({ nombre: "Discovery", imagen: imgYung, artista: daftPunk.id });
-    await Cancion.create({ nombre: "One More Time", archivo: audioLofi, album: albumDiscovery.id });
-    await Cancion.create({ nombre: "Harder, Better, Faster, Stronger", archivo: audioHorror, album: albumDiscovery.id });
-    await Cancion.create({ nombre: "Digital Love", archivo: audioDormir, album: albumDiscovery.id });
-    await Cancion.create({ nombre: "Something About Us", archivo: audioAgony, album: albumDiscovery.id });
-
-    // --- DAFT PUNK - Random Access Memories ---
-    const albumRAM = await Album.create({ nombre: "Random Access Memories", imagen: imgLorem, artista: daftPunk.id });
-    await Cancion.create({ nombre: "Get Lucky", archivo: audioLofi, album: albumRAM.id });
-    await Cancion.create({ nombre: "Instant Crush", archivo: audioDormir, album: albumRAM.id });
-    await Cancion.create({ nombre: "Lose Yourself to Dance", archivo: audioHorror, album: albumRAM.id });
+    // --- ÁLBUM VARIADO (genérico) ---
+    const albumGenerico = await Album.create({ nombre: "Spotify Clone Mix", imagen: imgLorem, artista: artistaGenerico.id });
+    await Cancion.create({ nombre: "Test Track 1", archivo: audio10s, album: albumGenerico.id, imagen: imgLorem });
+    await Cancion.create({ nombre: "Test Track 2", archivo: audio10s, album: albumGenerico.id, imagen: imgLorem });
+    await Cancion.create({ nombre: "Test Track 3", archivo: audio10s, album: albumGenerico.id, imagen: imgLorem });
+    await Cancion.create({ nombre: "Test Track 4", archivo: audio10s, album: albumGenerico.id, imagen: imgLorem });
+    await Cancion.create({ nombre: "Test Track 5", archivo: audio10s, album: albumGenerico.id, imagen: imgLorem });
 
     // ==========================
     // TIENDA ITEMS

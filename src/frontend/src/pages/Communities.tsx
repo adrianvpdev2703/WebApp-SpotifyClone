@@ -147,51 +147,51 @@ export const Communities = () => {
 
   if (loading) {
     return (
-      <div className="space-y-4">
-        <h1 className="text-3xl font-bold mb-6">Comunidades</h1>
+      <div className="space-y-4 animate-fade-in">
+        <h1 className="text-3xl font-bold gradient-text mb-6">Comunidades</h1>
         {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="bg-zinc-800/50 rounded-lg p-4 animate-pulse h-20" />
+          <div key={i} className="glass rounded-xl p-4 animate-pulse h-20" style={{ animationDelay: `${i * 100}ms` }} />
         ))}
       </div>
     );
   }
 
   return (
-    <div>
+    <div className="animate-fade-in">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl font-bold">Comunidades</h1>
+        <h1 className="text-3xl font-bold gradient-text">Comunidades</h1>
         {userId && (
           <button onClick={() => setShowCreate(!showCreate)}
-            className="bg-green-500 text-black px-4 py-2 rounded-full font-bold text-sm hover:scale-105 transition">
+            className={`btn-${showCreate ? "secondary" : "primary"} text-sm`}>
             {showCreate ? "Cancelar" : "+ Crear comunidad"}
           </button>
         )}
       </div>
 
       {showCreate && (
-        <form onSubmit={createComunidad} className="bg-zinc-900 p-6 rounded-lg border border-zinc-800 mb-6 space-y-3">
+        <form onSubmit={createComunidad} className="glass-strong rounded-xl p-6 border border-zinc-700/50 mb-6 space-y-3 animate-slide-up">
           <input type="text" placeholder="Nombre de la comunidad" value={newNombre}
             onChange={(e) => setNewNombre(e.target.value)}
-            className="w-full p-3 rounded bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:border-green-500" required />
+            className="input-base" required />
           <textarea placeholder="Descripción" value={newDesc}
             onChange={(e) => setNewDesc(e.target.value)}
-            className="w-full p-3 rounded bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:border-green-500" rows={3} />
+            className="input-base" rows={3} />
           <label className="flex items-center gap-2 text-sm text-gray-300">
             <input type="checkbox" checked={newPrivada} onChange={(e) => setNewPrivada(e.target.checked)}
               className="rounded bg-zinc-800 border-zinc-700" />
             Comunidad privada
           </label>
-          <button type="submit" className="bg-green-500 text-black px-6 py-2 rounded-full font-bold">Crear</button>
+          <button type="submit" className="btn-primary">Crear</button>
         </form>
       )}
 
       {selectedCom ? (
-        <div>
+        <div className="animate-fade-in">
           <div className="flex items-center gap-4 mb-6">
             <button onClick={() => { setSelectedCom(null); setMensajes([]); setMiembros([]); }}
               className="text-gray-400 hover:text-white text-lg">←</button>
             <div>
-              <h2 className="text-2xl font-bold">{selectedCom.nombre}</h2>
+              <h2 className="text-2xl font-bold gradient-text">{selectedCom.nombre}</h2>
               <p className="text-sm text-gray-400">{selectedCom.descripcion}</p>
               <p className="text-xs text-gray-500">{miembros.length} miembros</p>
             </div>
@@ -199,7 +199,7 @@ export const Communities = () => {
               <div className="ml-auto flex gap-2">
                 {!miembros.some((m) => m.id === userId) ? (
                   <button onClick={() => joinComunidad(selectedCom.id)}
-                    className="bg-green-500 text-black px-4 py-1.5 rounded-full text-sm font-bold hover:scale-105 transition">Unirse</button>
+                    className="btn-primary text-sm">Unirse</button>
                 ) : (
                   <button onClick={() => leaveComunidad(selectedCom.id)}
                     className="bg-red-500/20 text-red-400 px-4 py-1.5 rounded-full text-sm font-bold border border-red-500/30 hover:bg-red-500/30 transition">Abandonar</button>
@@ -213,7 +213,7 @@ export const Communities = () => {
             <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-2">Miembros</h3>
             <div className="flex flex-wrap gap-2">
               {miembros.map((m) => (
-                <span key={m.id} className="bg-zinc-800 text-white px-3 py-1 rounded-full text-xs border border-zinc-700">
+                <span key={m.id} className="glass text-white px-3 py-1 rounded-full text-xs border border-zinc-700/50">
                   {m.username}
                 </span>
               ))}
@@ -221,14 +221,14 @@ export const Communities = () => {
           </div>
 
           {/* Chat */}
-          <div className="bg-zinc-900/50 rounded-lg border border-zinc-800">
-            <div className="h-96 overflow-y-auto p-4 space-y-3">
+          <div className="glass-strong rounded-xl border border-zinc-700/50">
+            <div className="h-96 overflow-y-auto p-4 space-y-3 scrollbar-thin">
               {mensajes.length === 0 ? (
                 <p className="text-gray-500 text-center py-10">No hay mensajes aún. ¡Sé el primero en escribir!</p>
               ) : (
                 mensajes.map((msg) => (
-                  <div key={msg.id} className={`flex ${msg.autor?.id === userId ? "justify-end" : "justify-start"}`}>
-                    <div className={`max-w-[70%] p-3 rounded-lg ${msg.autor?.id === userId ? "bg-green-500/20 border border-green-500/30" : "bg-zinc-800 border border-zinc-700"} ${msg.es_cancion ? "border-l-4 border-l-green-500" : ""}`}>
+                  <div key={msg.id} className={`flex ${msg.autor?.id === userId ? "justify-end" : "justify-start"} animate-slide-up`}>
+                    <div className={`max-w-[70%] p-3 rounded-xl ${msg.autor?.id === userId ? "bg-green-500/20 border border-green-500/30" : "glass border border-zinc-700/50"} ${msg.es_cancion ? "border-l-4 border-l-green-500" : ""}`}>
                       <div className="flex items-center gap-2 mb-1">
                         <span className="text-xs font-bold text-green-400">{msg.autor?.username || "Desconocido"}</span>
                         <span className="text-xs text-gray-500">{new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
@@ -245,18 +245,20 @@ export const Communities = () => {
               <form onSubmit={sendMessage} className="flex gap-2 p-4 border-t border-zinc-800">
                 <input type="text" placeholder="Escribe un mensaje... (usa /song para compartir canción)" value={mensajeInput}
                   onChange={(e) => setMensajeInput(e.target.value)}
-                  className="flex-1 p-3 rounded bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:border-green-500 text-sm" />
-                <button type="submit" className="bg-green-500 text-black px-4 py-2 rounded-full font-bold text-sm hover:scale-105 transition">Enviar</button>
+                  className="flex-1 input-base text-sm" />
+                <button type="submit" className="btn-primary text-sm">Enviar</button>
               </form>
             )}
           </div>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {comunidades.map((com) => (
+          {comunidades.map((com, index) => (
             <div key={com.id}
-              className="bg-zinc-800/40 border border-zinc-800 hover:border-zinc-700 rounded-lg p-5 cursor-pointer transition group"
-              onClick={() => openComunidad(com)}>
+              className="glass card-hover rounded-xl p-5 cursor-pointer transition group animate-slide-up"
+              onClick={() => openComunidad(com)}
+              style={{ animationDelay: `${index * 80}ms` }}
+            >
               <div className="flex items-start justify-between mb-3">
                 <div>
                   <h3 className="text-lg font-bold text-white group-hover:text-green-400 transition">{com.nombre}</h3>
@@ -265,7 +267,7 @@ export const Communities = () => {
               </div>
               <div className="flex items-center gap-3 text-sm text-gray-500">
                 <span>👥 {com.miembros_count} miembros</span>
-                {com.es_privada && <span className="text-xs bg-zinc-700 px-2 py-0.5 rounded-full">🔒 Privada</span>}
+                {com.es_privada && <span className="text-xs glass px-2 py-0.5 rounded-full">🔒 Privada</span>}
               </div>
             </div>
           ))}

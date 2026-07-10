@@ -38,19 +38,19 @@ export const Ranking = () => {
   }, []);
 
   return (
-    <div>
+    <div className="animate-fade-in">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold">Ranking Global</h1>
+        <h1 className="text-3xl font-bold gradient-text">Ranking Global</h1>
         <p className="text-gray-400 mt-1">Los mejores oyentes de la comunidad</p>
       </div>
 
       {loading ? (
         <div className="space-y-3">
           {Array.from({ length: 5 }).map((_, i) => (
-            <div key={i} className="bg-zinc-800/50 rounded-lg p-4 animate-pulse flex items-center gap-4">
-              <div className="w-8 h-8 bg-zinc-700 rounded-full" />
-              <div className="flex-1 h-4 bg-zinc-700 rounded w-1/3" />
-              <div className="h-4 bg-zinc-700 rounded w-20" />
+            <div key={i} className="glass rounded-xl p-4 animate-pulse flex items-center gap-4">
+              <div className="w-8 h-8 bg-zinc-700/50 rounded-full" />
+              <div className="flex-1 h-4 bg-zinc-700/50 rounded w-1/3" />
+              <div className="h-4 bg-zinc-700/50 rounded w-20" />
             </div>
           ))}
         </div>
@@ -63,11 +63,13 @@ export const Ranking = () => {
             const isTop3 = pos <= 3;
             return (
               <div key={user.id}
-                className={`flex items-center gap-4 p-4 rounded-lg border transition ${isTop3 ? tierBg[String(pos)] : "bg-zinc-800/30 border-zinc-800 hover:bg-zinc-800/50"}`}>
+                className={`flex items-center gap-4 p-4 rounded-xl border transition-all duration-300 animate-slide-up ${isTop3 ? tierBg[String(pos)] + " glass" : "glass card-hover"}`}
+                style={{ animationDelay: `${index * 80}ms` }}
+              >
                 <div className="w-10 text-center">
                   {isTop3 ? <span className="text-2xl">{tierIcons[String(pos)]}</span> : <span className="text-gray-500 font-bold text-lg">{pos}</span>}
                 </div>
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center text-white font-bold text-sm">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center text-white font-bold text-sm shadow-lg">
                   {user.username.charAt(0).toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -75,9 +77,9 @@ export const Ranking = () => {
                   <p className="text-xs text-gray-400">Nivel {user.nivel} · {user.xp_actual} XP</p>
                 </div>
                 <div className="flex items-center gap-4 text-sm">
-                  <div className="hidden sm:flex items-center gap-1 text-orange-400"><span>🔥</span><span>{user.racha_dias}d</span></div>
+                  <div className="hidden sm:flex items-center gap-1 text-orange-400"><span>📅</span><span>{user.racha_dias}d</span></div>
                   <div className="flex items-center gap-1 text-yellow-400"><span>💎</span><span>{user.puntos_tienda}</span></div>
-                  <div className="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-xs font-bold border border-green-500/30 min-w-[60px] text-center">Lv.{user.nivel}</div>
+                  <div className="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-xs font-bold border border-green-500/30 min-w-[60px] text-center hover:bg-green-500/30 transition">Lv.{user.nivel}</div>
                 </div>
               </div>
             );

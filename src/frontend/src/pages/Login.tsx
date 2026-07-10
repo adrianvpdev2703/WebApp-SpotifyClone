@@ -64,26 +64,29 @@ export const Login = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-20">
-      <div className="bg-zinc-900 p-8 rounded-lg border border-zinc-800">
-        <div className="flex mb-8">
+    <div className="max-w-md mx-auto mt-20 animate-fade-in">
+      <div className="glass-strong rounded-xl p-8 border border-zinc-700/50 shadow-2xl">
+        <h1 className="text-2xl font-bold gradient-text text-center mb-6">
+          {isRegister ? "Crear cuenta" : "Iniciar sesión"}
+        </h1>
+        <div className="flex mb-8 rounded-full overflow-hidden border border-zinc-700/50">
           <button onClick={() => setIsRegister(false)}
-            className={`flex-1 py-2 text-center font-bold rounded-l-full transition ${!isRegister ? "bg-green-500 text-black" : "bg-zinc-800 text-gray-400"}`}>Iniciar Sesión</button>
+            className={`flex-1 py-2 text-center font-bold transition ${!isRegister ? "bg-green-500 text-black" : "bg-zinc-800 text-gray-400 hover:bg-zinc-700"}`}>Iniciar Sesión</button>
           <button onClick={() => setIsRegister(true)}
-            className={`flex-1 py-2 text-center font-bold rounded-r-full transition ${isRegister ? "bg-green-500 text-black" : "bg-zinc-800 text-gray-400"}`}>Registrarse</button>
+            className={`flex-1 py-2 text-center font-bold transition ${isRegister ? "bg-green-500 text-black" : "bg-zinc-800 text-gray-400 hover:bg-zinc-700"}`}>Registrarse</button>
         </div>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           {isRegister && (
             <input type="text" placeholder="Nombre de usuario" value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="p-3 rounded bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:border-green-500" required />
+              className="input-base" required />
           )}
           <input type="email" placeholder="Correo electrónico" value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="p-3 rounded bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:border-green-500" required />
-          {error && <p className="text-red-500 text-sm">{error}</p>}
+            className="input-base" required />
+          {error && <p className="text-red-500 text-sm bg-red-500/10 p-2 rounded-lg">{error}</p>}
           <button type="submit" disabled={loading}
-            className="bg-green-500 text-black font-bold py-3 rounded-full hover:scale-105 transition disabled:opacity-50">
+            className="btn-primary disabled:opacity-50">
             {loading ? "Cargando..." : isRegister ? "Crear Cuenta" : "Entrar"}
           </button>
         </form>

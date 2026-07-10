@@ -77,16 +77,17 @@ const gamificationSlice = createSlice({
   name: "gamification",
   initialState,
   reducers: {
-    updateUser(state, action: PayloadAction<UserData>) {
+    updateUser(state, action: PayloadAction<Partial<UserData>>) {
       const d = action.payload;
-      state.id = d.id;
-      state.username = d.username;
-      state.nivel = d.nivel;
-      state.xp = d.xp_actual;
-      state.xpRequerida = d.xp_requerida ?? d.nivel * 100;
-      state.racha = d.racha_dias;
-      state.puntos = d.puntos_tienda;
-      state.combo = d.combo_actual ?? 0;
+      if (d.id !== undefined) state.id = d.id;
+      if (d.username !== undefined) state.username = d.username;
+      if (d.nivel !== undefined) state.nivel = d.nivel;
+      if (d.xp_actual !== undefined) state.xp = d.xp_actual;
+      if (d.xp_requerida !== undefined) state.xpRequerida = d.xp_requerida;
+      else if (d.nivel !== undefined) state.xpRequerida = d.nivel * 100;
+      if (d.racha_dias !== undefined) state.racha = d.racha_dias;
+      if (d.puntos_tienda !== undefined) state.puntos = d.puntos_tienda;
+      if (d.combo_actual !== undefined) state.combo = d.combo_actual;
     },
     setCurrentSong(state, action: PayloadAction<Song | null>) {
       state.currentSong = action.payload;
